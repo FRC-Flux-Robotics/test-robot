@@ -32,18 +32,6 @@ class ConstantsTest {
     }
 
     @Test
-    void operatorConstants_speedLimits_areWithinValidRange() {
-        // Speed limits should be between 0 and 1
-        double speedLimitX = Constants.OperatorConstants.SpeedLimitX;
-        double speedLimitRot = Constants.OperatorConstants.SpeedLimitRot;
-
-        assertTrue(speedLimitX > 0 && speedLimitX <= 1.0,
-            "SpeedLimitX should be between 0 and 1, was: " + speedLimitX);
-        assertTrue(speedLimitRot > 0 && speedLimitRot <= 1.0,
-            "SpeedLimitRot should be between 0 and 1, was: " + speedLimitRot);
-    }
-
-    @Test
     void operatorConstants_triggerThreshold_isValid() {
         double threshold = Constants.OperatorConstants.TriggerThreshold;
         assertTrue(threshold >= 0 && threshold < 1.0,

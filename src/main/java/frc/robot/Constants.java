@@ -42,15 +42,11 @@ public final class Constants {
     public static final double LinCoef = 0.15;
     public static final double Threshold = 0.0;
     public static final double CuspX = 0.9;
-    //TODO: Tune before competition!
-    public static final double SpeedLimitX = 0.5;
     public static final double MinLimit = 0.4;
 
     public static final double RotLinCoef = 0.2;
     public static final double RotThreshold = 0.0;
     public static final double RotCuspX = 0.5;
-    //TODO: Tune before competition!
-    public static final double SpeedLimitRot = 0.8;
   }
 
   public static class LightConstants {
