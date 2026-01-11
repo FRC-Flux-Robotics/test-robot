@@ -56,4 +56,78 @@ class SwerveModuleConfigTest {
         assertEquals(xInches, config.xPos.in(Inches), 0.0001);
         assertEquals(yInches, config.yPos.in(Inches), 0.0001);
     }
+
+    @Test
+    void encoderOffset_handlesNegativeValues() {
+        double negativeOffset = -0.371826171875;
+        SwerveModuleConfig config = new SwerveModuleConfig(
+            1, 2, 3,
+            negativeOffset,
+            0.0, 0.0,
+            false, false, false
+        );
+
+        assertEquals(negativeOffset, config.encoderOffset.in(Rotations), 0.0001);
+    }
+
+    @Test
+    void constructor_handlesZeroValues() {
+        SwerveModuleConfig config = new SwerveModuleConfig(
+            0, 0, 0,
+            0.0,
+            0.0, 0.0,
+            false, false, false
+        );
+
+        assertEquals(0, config.driveMotorId);
+        assertEquals(0, config.steerMotorId);
+        assertEquals(0, config.encoderId);
+        assertEquals(0.0, config.encoderOffset.in(Rotations), 0.0001);
+        assertEquals(0.0, config.xPos.in(Inches), 0.0001);
+        assertEquals(0.0, config.yPos.in(Inches), 0.0001);
+    }
+
+    @Test
+    void inversionFlags_allCombinations() {
+        // All false
+        SwerveModuleConfig allFalse = new SwerveModuleConfig(
+            1, 2, 3, 0.0, 0.0, 0.0,
+            false, false, false
+        );
+        assertFalse(allFalse.invertSide);
+        assertFalse(allFalse.steerMotorInverted);
+        assertFalse(allFalse.encoderInverted);
+
+        // All true
+        SwerveModuleConfig allTrue = new SwerveModuleConfig(
+            1, 2, 3, 0.0, 0.0, 0.0,
+            true, true, true
+        );
+        assertTrue(allTrue.invertSide);
+        assertTrue(allTrue.steerMotorInverted);
+        assertTrue(allTrue.encoderInverted);
+
+        // Mixed - typical right side module
+        SwerveModuleConfig rightSide = new SwerveModuleConfig(
+            1, 2, 3, 0.0, 0.0, 0.0,
+            true, false, false
+        );
+        assertTrue(rightSide.invertSide);
+        assertFalse(rightSide.steerMotorInverted);
+        assertFalse(rightSide.encoderInverted);
+    }
+
+    @Test
+    void position_handlesNegativeCoordinates() {
+        // Back-right module typically has negative X and Y
+        SwerveModuleConfig backRight = new SwerveModuleConfig(
+            1, 2, 3,
+            0.0,
+            -11.5, -11.5,
+            false, false, false
+        );
+
+        assertEquals(-11.5, backRight.xPos.in(Inches), 0.0001);
+        assertEquals(-11.5, backRight.yPos.in(Inches), 0.0001);
+    }
 }
