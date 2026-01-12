@@ -12,14 +12,12 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.generated.TunerConstants;
 
 public class DriveForwardAuto extends Command {
-  private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-
   private CommandSwerveDrivetrain drivetrain;
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-    .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    .withDeadband(TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.1)
+    .withRotationalDeadband(RotationsPerSecond.of(0.75).in(RadiansPerSecond) * 0.1)
+    .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     private Timer timer = new Timer();
     private double driveTime = DriveConstants.AutoModeDriveTime;//3.25;
