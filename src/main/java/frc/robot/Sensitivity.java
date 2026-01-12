@@ -19,7 +19,7 @@ package frc.robot;
  *
  * @see PiecewiseSensitivity
  */
-class Sensitivity {
+public class Sensitivity {
     double threshold;
     double linCoef;
     double cuspX;

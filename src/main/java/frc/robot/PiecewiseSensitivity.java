@@ -17,7 +17,7 @@ package frc.robot;
  *
  * @see Sensitivity
  */
-class PiecewiseSensitivity {
+public class PiecewiseSensitivity {
     double xStart;
     double xMiddle;
     double yStart;
