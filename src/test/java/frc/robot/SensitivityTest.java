@@ -117,4 +117,59 @@ class SensitivityTest {
         // At new threshold with new linCoef
         assertEquals(0.08, sensitivity.transfer(0.2), 0.0001); // 0.2 * 0.4 = 0.08
     }
+
+    // Edge case tests for joystick input processing
+
+    @Test
+    void transfer_withZeroThreshold_noDeadband() {
+        // threshold=0 means no deadzone
+        Sensitivity noDeadzone = new Sensitivity(0.0, 0.5, 0.3, 0.8);
+
+        // Very small input should produce output
+        double result = noDeadzone.transfer(0.01);
+        assertEquals(0.003, result, 0.0001); // 0.01 * 0.3 = 0.003
+    }
+
+    @Test
+    void transfer_withZeroCusp_allQuadratic() {
+        // cuspX=0 means all inputs above threshold use quadratic
+        Sensitivity allQuadratic = new Sensitivity(0.1, 0.0, 0.3, 0.8);
+
+        // Any input above threshold should use quadratic formula
+        double result = allQuadratic.transfer(0.5);
+        // Result should be positive and within limit
+        assertTrue(result > 0, "Output should be positive");
+        assertTrue(result <= 0.8, "Output should be within limit");
+    }
+
+    @Test
+    void transfer_withFullCusp_allLinear() {
+        // cuspX=1.0 means all inputs use linear coefficient
+        Sensitivity allLinear = new Sensitivity(0.1, 1.0, 0.5, 1.0);
+
+        // All inputs should use linear scaling
+        assertEquals(0.25, allLinear.transfer(0.5), 0.0001); // 0.5 * 0.5 = 0.25
+        assertEquals(0.4, allLinear.transfer(0.8), 0.0001);  // 0.8 * 0.5 = 0.4
+    }
+
+    @Test
+    void transfer_withZeroLimit_clampsToZero() {
+        // limit=0 means all output is clamped to zero
+        Sensitivity zeroLimit = new Sensitivity(0.1, 0.5, 0.3, 0.0);
+
+        assertEquals(0.0, zeroLimit.transfer(0.5), 0.0001);
+        assertEquals(0.0, zeroLimit.transfer(1.0), 0.0001);
+    }
+
+    @Test
+    void transfer_exactlyAtBoundaries_handlesCorrectly() {
+        // Test behavior exactly at boundary points
+        // Exactly at threshold
+        double atThreshold = sensitivity.transfer(0.1);
+        assertEquals(0.03, atThreshold, 0.0001); // 0.1 * 0.3 = 0.03
+
+        // Exactly at cusp
+        double atCusp = sensitivity.transfer(0.5);
+        assertEquals(0.15, atCusp, 0.0001); // 0.5 * 0.3 = 0.15
+    }
 }
