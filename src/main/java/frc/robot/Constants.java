@@ -48,8 +48,4 @@ public final class Constants {
     public static final double RotThreshold = 0.0;
     public static final double RotCuspX = 0.5;
   }
-
-  public static class LightConstants {
-    public static final int CanId = 6;
-  }
 }
