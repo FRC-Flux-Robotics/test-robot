@@ -130,4 +130,96 @@ class SwerveModuleConfigTest {
         assertEquals(-11.5, backRight.xPos.in(Inches), 0.0001);
         assertEquals(-11.5, backRight.yPos.in(Inches), 0.0001);
     }
+
+    // Validation tests for CAN IDs
+
+    @Test
+    void constructor_rejectsNegativeDriveMotorId() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(-1, 2, 3, 0.0, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("driveMotorId"));
+    }
+
+    @Test
+    void constructor_rejectsTooHighDriveMotorId() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(63, 2, 3, 0.0, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("driveMotorId"));
+    }
+
+    @Test
+    void constructor_rejectsNegativeSteerMotorId() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(1, -1, 3, 0.0, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("steerMotorId"));
+    }
+
+    @Test
+    void constructor_rejectsTooHighSteerMotorId() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(1, 63, 3, 0.0, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("steerMotorId"));
+    }
+
+    @Test
+    void constructor_rejectsNegativeEncoderId() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(1, 2, -1, 0.0, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("encoderId"));
+    }
+
+    @Test
+    void constructor_rejectsTooHighEncoderId() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(1, 2, 63, 0.0, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("encoderId"));
+    }
+
+    // Validation tests for encoder offset
+
+    @Test
+    void constructor_rejectsEncoderOffsetTooLow() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(1, 2, 3, -1.1, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("encoderOffsetAngle"));
+    }
+
+    @Test
+    void constructor_rejectsEncoderOffsetTooHigh() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new SwerveModuleConfig(1, 2, 3, 1.1, 0.0, 0.0, false, false, false)
+        );
+        assertTrue(ex.getMessage().contains("encoderOffsetAngle"));
+    }
+
+    @Test
+    void constructor_acceptsBoundaryEncoderOffset() {
+        // -1.0 and 1.0 should be accepted (boundary values)
+        SwerveModuleConfig minOffset = new SwerveModuleConfig(
+            1, 2, 3, -1.0, 0.0, 0.0, false, false, false);
+        assertEquals(-1.0, minOffset.encoderOffset.in(Rotations), 0.0001);
+
+        SwerveModuleConfig maxOffset = new SwerveModuleConfig(
+            1, 2, 3, 1.0, 0.0, 0.0, false, false, false);
+        assertEquals(1.0, maxOffset.encoderOffset.in(Rotations), 0.0001);
+    }
+
+    @Test
+    void constructor_acceptsBoundaryCanIds() {
+        // 0 and 62 should be accepted (boundary values)
+        SwerveModuleConfig minIds = new SwerveModuleConfig(
+            0, 0, 0, 0.0, 0.0, 0.0, false, false, false);
+        assertEquals(0, minIds.driveMotorId);
+
+        SwerveModuleConfig maxIds = new SwerveModuleConfig(
+            62, 62, 62, 0.0, 0.0, 0.0, false, false, false);
+        assertEquals(62, maxIds.driveMotorId);
+    }
 }

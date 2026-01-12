@@ -91,6 +91,33 @@ public final class RobotConfig {
      */
     public RobotConfig(String driveCANBus, String systemCANBus, int pigeonId,
         SwerveModuleConfig fl, SwerveModuleConfig fr, SwerveModuleConfig bl, SwerveModuleConfig br) {
+        // Validate CAN bus names
+        if (driveCANBus == null || driveCANBus.isEmpty()) {
+            throw new IllegalArgumentException("driveCANBus must not be null or empty");
+        }
+        if (systemCANBus == null || systemCANBus.isEmpty()) {
+            throw new IllegalArgumentException("systemCANBus must not be null or empty");
+        }
+
+        // Validate Pigeon ID (CTRE valid range is 0-62)
+        if (pigeonId < 0 || pigeonId > 62) {
+            throw new IllegalArgumentException("pigeonId must be 0-62, got: " + pigeonId);
+        }
+
+        // Validate module configs
+        if (fl == null) {
+            throw new IllegalArgumentException("frontLeft module config must not be null");
+        }
+        if (fr == null) {
+            throw new IllegalArgumentException("frontRight module config must not be null");
+        }
+        if (bl == null) {
+            throw new IllegalArgumentException("backLeft module config must not be null");
+        }
+        if (br == null) {
+            throw new IllegalArgumentException("backRight module config must not be null");
+        }
+
         this.driveCANBus = driveCANBus;
         this.systemCANBus = systemCANBus;
         this.pigeonId = pigeonId;

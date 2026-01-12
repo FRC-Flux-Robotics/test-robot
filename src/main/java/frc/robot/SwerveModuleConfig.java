@@ -21,6 +21,23 @@ public class SwerveModuleConfig {
     public SwerveModuleConfig(int driveMotorId, int steerMotorId, int encoderId,
             double encoderOffsetAngle, double xPos, double yPos,
             boolean invertSide, boolean steerMotorInverted, boolean encoderInverted) {
+        // Validate CAN IDs (CTRE valid range is 0-62)
+        if (driveMotorId < 0 || driveMotorId > 62) {
+            throw new IllegalArgumentException("driveMotorId must be 0-62, got: " + driveMotorId);
+        }
+        if (steerMotorId < 0 || steerMotorId > 62) {
+            throw new IllegalArgumentException("steerMotorId must be 0-62, got: " + steerMotorId);
+        }
+        if (encoderId < 0 || encoderId > 62) {
+            throw new IllegalArgumentException("encoderId must be 0-62, got: " + encoderId);
+        }
+
+        // Validate encoder offset (should be within one rotation)
+        if (encoderOffsetAngle < -1.0 || encoderOffsetAngle > 1.0) {
+            throw new IllegalArgumentException(
+                    "encoderOffsetAngle must be -1.0 to 1.0 rotations, got: " + encoderOffsetAngle);
+        }
+
         this.driveMotorId = driveMotorId;
         this.steerMotorId = steerMotorId;
         this.encoderId = encoderId;

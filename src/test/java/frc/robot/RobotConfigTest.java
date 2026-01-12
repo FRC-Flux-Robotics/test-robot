@@ -84,4 +84,115 @@ class RobotConfigTest {
         assertFalse(RobotConfig.InvertLeftSide);
         assertTrue(RobotConfig.InvertRightSide);
     }
+
+    // Validation tests for CAN bus names
+
+    @Test
+    void constructor_rejectsNullDriveCANBus() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig(null, "rio", 20, module, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("driveCANBus"));
+    }
+
+    @Test
+    void constructor_rejectsEmptyDriveCANBus() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("", "rio", 20, module, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("driveCANBus"));
+    }
+
+    @Test
+    void constructor_rejectsNullSystemCANBus() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", null, 20, module, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("systemCANBus"));
+    }
+
+    @Test
+    void constructor_rejectsEmptySystemCANBus() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "", 20, module, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("systemCANBus"));
+    }
+
+    // Validation tests for Pigeon ID
+
+    @Test
+    void constructor_rejectsNegativePigeonId() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "rio", -1, module, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("pigeonId"));
+    }
+
+    @Test
+    void constructor_rejectsTooHighPigeonId() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "rio", 63, module, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("pigeonId"));
+    }
+
+    @Test
+    void constructor_acceptsBoundaryPigeonId() {
+        SwerveModuleConfig module = createValidModule();
+        // 0 and 62 should be accepted
+        RobotConfig minId = new RobotConfig("Drivetrain", "rio", 0, module, module, module, module);
+        assertEquals(0, minId.pigeonId);
+
+        RobotConfig maxId = new RobotConfig("Drivetrain", "rio", 62, module, module, module, module);
+        assertEquals(62, maxId.pigeonId);
+    }
+
+    // Validation tests for module configs
+
+    @Test
+    void constructor_rejectsNullFrontLeft() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "rio", 20, null, module, module, module)
+        );
+        assertTrue(ex.getMessage().contains("frontLeft"));
+    }
+
+    @Test
+    void constructor_rejectsNullFrontRight() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "rio", 20, module, null, module, module)
+        );
+        assertTrue(ex.getMessage().contains("frontRight"));
+    }
+
+    @Test
+    void constructor_rejectsNullBackLeft() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "rio", 20, module, module, null, module)
+        );
+        assertTrue(ex.getMessage().contains("backLeft"));
+    }
+
+    @Test
+    void constructor_rejectsNullBackRight() {
+        SwerveModuleConfig module = createValidModule();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            new RobotConfig("Drivetrain", "rio", 20, module, module, module, null)
+        );
+        assertTrue(ex.getMessage().contains("backRight"));
+    }
+
+    private SwerveModuleConfig createValidModule() {
+        return new SwerveModuleConfig(1, 2, 10, 0.0, 10.0, 10.0, false, false, false);
+    }
 }
