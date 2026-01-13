@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.function.Supplier;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -139,7 +140,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     {
         super(drivetrainConstants, modules);
 
-        gyro = new Pigeon2(config.pigeonId, config.driveCANBus);
+        gyro = new Pigeon2(config.pigeonId, new CANBus(config.driveCANBus));
         initOdometry(
             new Translation2d(config.frontLeft.xPos, config.frontLeft.yPos),
             new Translation2d(config.frontRight.xPos, config.frontRight.yPos),
@@ -173,7 +174,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     {
         super(drivetrainConstants, odometryUpdateFrequency, modules);
 
-        gyro = new Pigeon2(config.pigeonId, config.driveCANBus);
+        gyro = new Pigeon2(config.pigeonId, new CANBus(config.driveCANBus));
         initOdometry(
             new Translation2d(config.frontLeft.xPos, config.frontLeft.yPos),
             new Translation2d(config.frontRight.xPos, config.frontRight.yPos),
@@ -215,7 +216,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     {
         super(drivetrainConstants, odometryUpdateFrequency, odometryStandardDeviation, visionStandardDeviation, modules);
 
-        gyro = new Pigeon2(config.pigeonId, config.driveCANBus);
+        gyro = new Pigeon2(config.pigeonId, new CANBus(config.driveCANBus));
         initOdometry(
             new Translation2d(config.frontLeft.xPos, config.frontLeft.yPos),
             new Translation2d(config.frontRight.xPos, config.frontRight.yPos),
