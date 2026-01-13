@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
@@ -11,6 +13,11 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import frc.robot.subsystems.drive.DrivetrainIO;
+import frc.robot.subsystems.drive.DrivetrainIOInputsAutoLogged;
+import frc.robot.subsystems.drive.DrivetrainIOSim;
+import frc.robot.subsystems.drive.DrivetrainIOTalonFX;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -42,6 +49,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+
+    // AdvantageKit IO layer for logging
+    private final DrivetrainIO io;
+    private final DrivetrainIOInputsAutoLogged inputs = new DrivetrainIOInputsAutoLogged();
+    private DrivetrainIOSim ioSim = null; // Only non-null in simulation
 
     protected Pigeon2 gyro;
     protected SwerveDriveKinematics kinematics;
@@ -148,8 +160,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             new Translation2d(config.backRight.xPos, config.backRight.yPos)
         );
 
+        // Initialize AdvantageKit IO layer
         if (Utils.isSimulation()) {
+            ioSim = new DrivetrainIOSim();
+            io = ioSim;
             startSimThread();
+        } else {
+            io = new DrivetrainIOTalonFX(this, gyro);
         }
     }
 
@@ -182,8 +199,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             new Translation2d(config.backRight.xPos, config.backRight.yPos)
         );
 
+        // Initialize AdvantageKit IO layer
         if (Utils.isSimulation()) {
+            ioSim = new DrivetrainIOSim();
+            io = ioSim;
             startSimThread();
+        } else {
+            io = new DrivetrainIOTalonFX(this, gyro);
         }
     }
 
@@ -224,8 +246,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             new Translation2d(config.backRight.xPos, config.backRight.yPos)
         );
 
+        // Initialize AdvantageKit IO layer
         if (Utils.isSimulation()) {
+            ioSim = new DrivetrainIOSim();
+            io = ioSim;
             startSimThread();
+        } else {
+            io = new DrivetrainIOTalonFX(this, gyro);
         }
     }
 
@@ -281,6 +308,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             });
         }
 
+        // AdvantageKit: Update and log drivetrain inputs
+        io.updateInputs(inputs);
+        Logger.processInputs("Drive", inputs);
+
         // Get the rotation of the robot from the gyro.
         Rotation2d rotation = gyro.getRotation2d();
         // Update the pose
@@ -302,6 +333,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
             /* use the measured time delta, get battery voltage from WPILib */
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
+
+            // Update AdvantageKit IO simulation
+            if (ioSim != null) {
+                ioSim.updateSimulation(deltaTime);
+            }
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
