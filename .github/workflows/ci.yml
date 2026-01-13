@@ -22,6 +22,35 @@ jobs:
       - name: Run tests with coverage
         run: ./gradlew check
 
+      - name: Generate coverage summary
+        if: always()
+        run: |
+          REPORT_FILE="build/reports/jacoco/test/jacocoTestReport.xml"
+          if [ -f "$REPORT_FILE" ]; then
+            # Extract the report-level instruction counter (last one before </report>)
+            INSTRUCTION_LINE=$(tail -c 1000 "$REPORT_FILE" | grep -oP '<counter type="INSTRUCTION" missed="[0-9]+" covered="[0-9]+"/>' | tail -1)
+            MISSED=$(echo "$INSTRUCTION_LINE" | grep -oP 'missed="\K[0-9]+')
+            COVERED=$(echo "$INSTRUCTION_LINE" | grep -oP 'covered="\K[0-9]+')
+            if [ -n "$MISSED" ] && [ -n "$COVERED" ]; then
+              TOTAL=$((MISSED + COVERED))
+              if [ $TOTAL -gt 0 ]; then
+                PERCENT=$((COVERED * 100 / TOTAL))
+                echo "## Code Coverage Report" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+                echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+                echo "| Instructions Covered | $COVERED |" >> $GITHUB_STEP_SUMMARY
+                echo "| Instructions Missed | $MISSED |" >> $GITHUB_STEP_SUMMARY
+                echo "| **Coverage** | **${PERCENT}%** |" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "Full report available in workflow artifacts" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+          else
+            echo "## Code Coverage Report" >> $GITHUB_STEP_SUMMARY
+            echo "Coverage report not generated" >> $GITHUB_STEP_SUMMARY
+          fi
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         if: always()
