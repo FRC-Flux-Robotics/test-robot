@@ -353,6 +353,15 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return currentPose;  //odometry.getPoseMeters();
     }
 
+    /**
+     * Returns the Pigeon2 gyro used by this drivetrain.
+     *
+     * @return The Pigeon2 gyro instance
+     */
+    public Pigeon2 getGyro() {
+        return gyro;
+    }
+
     public void resetOdometry(Pose2d pose) {
         odometry.resetPosition(gyro.getRotation2d(), getState().ModulePositions, pose);
     }
