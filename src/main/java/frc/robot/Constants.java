@@ -36,6 +36,41 @@ public final class Constants {
     public static final String FILE_LOG_DIRECTORY_SIM = "logs";
   }
 
+  public static final class SimulationConstants {
+    /** Robot mass in kilograms (approximately 125 lbs with battery). */
+    public static final double ROBOT_MASS_KG = 56.7;
+
+    /** Robot moment of inertia for rotation in kg·m². */
+    public static final double ROBOT_MOI_KG_M2 = 6.0;
+
+    /** Wheel radius in meters (2 inches). */
+    public static final double WHEEL_RADIUS_METERS = 0.0508;
+
+    /** Drive motor gear ratio (motor rotations per wheel rotation). */
+    public static final double DRIVE_GEAR_RATIO = 6.394736842105262;
+
+    /** Steer motor gear ratio. */
+    public static final double STEER_GEAR_RATIO = 12.1;
+
+    /** Drive motor moment of inertia in kg·m². */
+    public static final double DRIVE_MOTOR_INERTIA_KG_M2 = 0.01;
+
+    /** Steer motor moment of inertia in kg·m². */
+    public static final double STEER_MOTOR_INERTIA_KG_M2 = 0.01;
+
+    /** Track width (left-right distance between wheels) in meters. */
+    public static final double TRACK_WIDTH_METERS = 0.5842;
+
+    /** Wheel base (front-back distance between wheels) in meters. */
+    public static final double WHEEL_BASE_METERS = 0.5842;
+
+    /** Maximum speed at 12V in meters per second. */
+    public static final double MAX_SPEED_MPS = 4.99;
+
+    /** Simulated loop period in seconds (5ms = 200Hz). */
+    public static final double SIM_LOOP_PERIOD_SECONDS = 0.005;
+  }
+
   public static class OperatorConstants {
     public static final int DriverControllerPort = 0;
     public static final int OperatorControllerPort = 1;

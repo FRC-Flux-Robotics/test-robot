@@ -1,39 +1,35 @@
 package frc.robot.subsystems.drive;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import frc.robot.Constants.SimulationConstants;
 
 /**
- * Simulation implementation of DrivetrainIO for AdvantageKit log replay and testing.
- * Provides a simple physics model for swerve drivetrain simulation.
+ * Simulation implementation of DrivetrainIO using WPILib physics simulation.
+ * Uses DCMotorSim for realistic motor dynamics including inertia, gear ratios,
+ * and current draw estimation.
  */
 public class DrivetrainIOSim implements DrivetrainIO {
 
     private static final int MODULE_COUNT = 4;
 
-    // Simulation constants (from TunerConstants)
-    private static final double WHEEL_RADIUS_METERS = 0.0508; // 2 inches
-    private static final double DRIVE_GEAR_RATIO = 6.394736842105262;
-    private static final double TRACK_WIDTH_METERS = 0.5842; // 23 inches
-    private static final double WHEEL_BASE_METERS = 0.5842; // 23 inches
-    private static final double MAX_SPEED_MPS = 4.99; // From TunerConstants.kSpeedAt12Volts
+    // Motor model - using Kraken X60 (similar to Falcon 500 but newer)
+    private static final DCMotor DRIVE_MOTOR = DCMotor.getKrakenX60(1);
+    private static final DCMotor STEER_MOTOR = DCMotor.getFalcon500(1);
+
+    // Drive motor simulations (one per module)
+    private final DCMotorSim[] driveMotorSims = new DCMotorSim[MODULE_COUNT];
+    private final DCMotorSim[] steerMotorSims = new DCMotorSim[MODULE_COUNT];
 
     // Simulated gyro state
     private double gyroYawDegrees = 0.0;
     private double gyroYawRateDegPS = 0.0;
     private double gyroPitchDegrees = 0.0;
     private double gyroRollDegrees = 0.0;
-
-    // Simulated module state
-    private final double[] drivePositionsRad = new double[MODULE_COUNT];
-    private final double[] driveVelocitiesRadPerSec = new double[MODULE_COUNT];
-    private final double[] driveAppliedVolts = new double[MODULE_COUNT];
-    private final double[] driveCurrentAmps = new double[MODULE_COUNT];
-
-    private final double[] steerPositionsRad = new double[MODULE_COUNT];
-    private final double[] steerVelocitiesRadPerSec = new double[MODULE_COUNT];
-    private final double[] steerAppliedVolts = new double[MODULE_COUNT];
-    private final double[] steerCurrentAmps = new double[MODULE_COUNT];
 
     // Simulated odometry
     private double odometryX = 0.0;
@@ -46,14 +42,36 @@ public class DrivetrainIOSim implements DrivetrainIO {
     private double requestedOmegaRadPS = 0.0;
     private boolean isFieldCentric = true;
 
+    // Target steer angles for each module
+    private final double[] targetSteerAnglesRad = new double[MODULE_COUNT];
+
     // Operator perspective
     private Rotation2d operatorPerspective = Rotation2d.kZero;
 
     /**
-     * Creates a new DrivetrainIOSim with default configuration.
+     * Creates a new DrivetrainIOSim with physics-based motor simulation.
      */
     public DrivetrainIOSim() {
-        // Initialize all arrays to zero (already done by default)
+        // Initialize drive motor simulations
+        for (int i = 0; i < MODULE_COUNT; i++) {
+            driveMotorSims[i] = new DCMotorSim(
+                LinearSystemId.createDCMotorSystem(
+                    DRIVE_MOTOR,
+                    SimulationConstants.DRIVE_MOTOR_INERTIA_KG_M2,
+                    SimulationConstants.DRIVE_GEAR_RATIO
+                ),
+                DRIVE_MOTOR
+            );
+
+            steerMotorSims[i] = new DCMotorSim(
+                LinearSystemId.createDCMotorSystem(
+                    STEER_MOTOR,
+                    SimulationConstants.STEER_MOTOR_INERTIA_KG_M2,
+                    SimulationConstants.STEER_GEAR_RATIO
+                ),
+                STEER_MOTOR
+            );
+        }
     }
 
     @Override
@@ -65,16 +83,18 @@ public class DrivetrainIOSim implements DrivetrainIO {
         inputs.gyroPitchDegrees = gyroPitchDegrees;
         inputs.gyroRollDegrees = gyroRollDegrees;
 
-        // Module data
-        System.arraycopy(drivePositionsRad, 0, inputs.drivePositionsRad, 0, MODULE_COUNT);
-        System.arraycopy(driveVelocitiesRadPerSec, 0, inputs.driveVelocitiesRadPerSec, 0, MODULE_COUNT);
-        System.arraycopy(driveAppliedVolts, 0, inputs.driveAppliedVolts, 0, MODULE_COUNT);
-        System.arraycopy(driveCurrentAmps, 0, inputs.driveCurrentAmps, 0, MODULE_COUNT);
+        // Module data from physics simulation
+        for (int i = 0; i < MODULE_COUNT; i++) {
+            inputs.drivePositionsRad[i] = driveMotorSims[i].getAngularPositionRad();
+            inputs.driveVelocitiesRadPerSec[i] = driveMotorSims[i].getAngularVelocityRadPerSec();
+            inputs.driveAppliedVolts[i] = driveMotorSims[i].getInputVoltage();
+            inputs.driveCurrentAmps[i] = Math.abs(driveMotorSims[i].getCurrentDrawAmps());
 
-        System.arraycopy(steerPositionsRad, 0, inputs.steerPositionsRad, 0, MODULE_COUNT);
-        System.arraycopy(steerVelocitiesRadPerSec, 0, inputs.steerVelocitiesRadPerSec, 0, MODULE_COUNT);
-        System.arraycopy(steerAppliedVolts, 0, inputs.steerAppliedVolts, 0, MODULE_COUNT);
-        System.arraycopy(steerCurrentAmps, 0, inputs.steerCurrentAmps, 0, MODULE_COUNT);
+            inputs.steerPositionsRad[i] = steerMotorSims[i].getAngularPositionRad();
+            inputs.steerVelocitiesRadPerSec[i] = steerMotorSims[i].getAngularVelocityRadPerSec();
+            inputs.steerAppliedVolts[i] = steerMotorSims[i].getInputVoltage();
+            inputs.steerCurrentAmps[i] = Math.abs(steerMotorSims[i].getCurrentDrawAmps());
+        }
 
         // Odometry
         inputs.odometryX = odometryX;
@@ -120,7 +140,7 @@ public class DrivetrainIOSim implements DrivetrainIO {
 
     /**
      * Steps the physics simulation forward by the given time delta.
-     * Call this periodically (e.g., every 20ms in the robot loop).
+     * Call this periodically (e.g., every 5ms in the robot sim loop).
      *
      * @param dtSeconds Time delta in seconds
      */
@@ -141,28 +161,9 @@ public class DrivetrainIOSim implements DrivetrainIO {
             robotVyMps = requestedVyMps;
         }
 
-        // Update gyro yaw rate and integrate
-        gyroYawRateDegPS = Math.toDegrees(requestedOmegaRadPS);
-        gyroYawDegrees += gyroYawRateDegPS * dtSeconds;
-
-        // Normalize gyro yaw to [-180, 180)
-        while (gyroYawDegrees >= 180.0) gyroYawDegrees -= 360.0;
-        while (gyroYawDegrees < -180.0) gyroYawDegrees += 360.0;
-
-        // Update odometry (integrate in field frame)
-        double fieldAngleRad = Math.toRadians(gyroYawDegrees);
-        double fieldCos = Math.cos(fieldAngleRad);
-        double fieldSin = Math.sin(fieldAngleRad);
-        odometryX += (robotVxMps * fieldCos - robotVyMps * fieldSin) * dtSeconds;
-        odometryY += (robotVxMps * fieldSin + robotVyMps * fieldCos) * dtSeconds;
-        odometryRotationRad = Math.toRadians(gyroYawDegrees);
-
-        // Calculate module states from robot velocities (simplified kinematics)
-        // Using differential swerve approximation for each corner
-        double halfTrack = TRACK_WIDTH_METERS / 2.0;
-        double halfBase = WHEEL_BASE_METERS / 2.0;
-
         // Module positions relative to center: FL, FR, BL, BR
+        double halfTrack = SimulationConstants.TRACK_WIDTH_METERS / 2.0;
+        double halfBase = SimulationConstants.WHEEL_BASE_METERS / 2.0;
         double[][] moduleOffsets = {
             {halfBase, halfTrack},   // FL
             {halfBase, -halfTrack},  // FR
@@ -170,33 +171,66 @@ public class DrivetrainIOSim implements DrivetrainIO {
             {-halfBase, -halfTrack}  // BR
         };
 
+        // Calculate and apply physics for each module
         for (int i = 0; i < MODULE_COUNT; i++) {
             // Calculate module velocity from robot motion
             double moduleVx = robotVxMps - requestedOmegaRadPS * moduleOffsets[i][1];
             double moduleVy = robotVyMps + requestedOmegaRadPS * moduleOffsets[i][0];
             double moduleSpeed = Math.sqrt(moduleVx * moduleVx + moduleVy * moduleVy);
 
-            // Steer angle (atan2 of velocity components)
+            // Calculate target steer angle
             if (moduleSpeed > 0.001) {
-                steerPositionsRad[i] = Math.atan2(moduleVy, moduleVx);
+                targetSteerAnglesRad[i] = Math.atan2(moduleVy, moduleVx);
             }
-            // Keep previous steer angle if not moving
 
-            // Drive velocity in motor radians per second
-            double wheelRadPerSec = moduleSpeed / WHEEL_RADIUS_METERS;
-            double motorRadPerSec = wheelRadPerSec * DRIVE_GEAR_RATIO;
-            driveVelocitiesRadPerSec[i] = motorRadPerSec;
+            // Steer motor control - simple proportional voltage based on angle error
+            double currentSteerAngle = steerMotorSims[i].getAngularPositionRad();
+            double steerError = MathUtil.angleModulus(targetSteerAnglesRad[i] - currentSteerAngle);
+            double steerVoltage = MathUtil.clamp(steerError * 12.0, -12.0, 12.0);
+            steerMotorSims[i].setInputVoltage(steerVoltage);
+            steerMotorSims[i].update(dtSeconds);
 
-            // Integrate drive position
-            drivePositionsRad[i] += motorRadPerSec * dtSeconds;
-
-            // Estimate applied voltage from velocity (simple linear model)
-            double normalizedSpeed = moduleSpeed / MAX_SPEED_MPS;
-            driveAppliedVolts[i] = normalizedSpeed * 12.0;
-
-            // Estimate current (rough approximation)
-            driveCurrentAmps[i] = Math.abs(normalizedSpeed) * 20.0;
+            // Drive motor control - voltage based on desired wheel speed
+            double wheelRadPerSec = moduleSpeed / SimulationConstants.WHEEL_RADIUS_METERS;
+            // Simple feedforward voltage (V = kV * velocity)
+            double driveVoltage = (wheelRadPerSec / (SimulationConstants.MAX_SPEED_MPS /
+                SimulationConstants.WHEEL_RADIUS_METERS)) * 12.0;
+            driveVoltage = MathUtil.clamp(driveVoltage, -12.0, 12.0);
+            driveMotorSims[i].setInputVoltage(driveVoltage);
+            driveMotorSims[i].update(dtSeconds);
         }
+
+        // Calculate actual robot motion from module velocities
+        double avgDriveVelRadPerSec = 0;
+        for (int i = 0; i < MODULE_COUNT; i++) {
+            avgDriveVelRadPerSec += driveMotorSims[i].getAngularVelocityRadPerSec();
+        }
+        avgDriveVelRadPerSec /= MODULE_COUNT;
+
+        // Convert motor velocity to wheel velocity
+        double wheelVelocityMps = (avgDriveVelRadPerSec / SimulationConstants.DRIVE_GEAR_RATIO)
+            * SimulationConstants.WHEEL_RADIUS_METERS;
+
+        // Use requested omega directly for rotation (simplified)
+        gyroYawRateDegPS = Math.toDegrees(requestedOmegaRadPS);
+        gyroYawDegrees += gyroYawRateDegPS * dtSeconds;
+
+        // Normalize gyro yaw to [-180, 180)
+        while (gyroYawDegrees >= 180.0) gyroYawDegrees -= 360.0;
+        while (gyroYawDegrees < -180.0) gyroYawDegrees += 360.0;
+
+        // Update odometry using actual wheel speeds
+        double fieldAngleRad = Math.toRadians(gyroYawDegrees);
+        double fieldCos = Math.cos(fieldAngleRad);
+        double fieldSin = Math.sin(fieldAngleRad);
+
+        // Estimate robot velocity from average module speed and heading
+        double actualRobotVx = wheelVelocityMps * Math.cos(targetSteerAnglesRad[0]);
+        double actualRobotVy = wheelVelocityMps * Math.sin(targetSteerAnglesRad[0]);
+
+        odometryX += (actualRobotVx * fieldCos - actualRobotVy * fieldSin) * dtSeconds;
+        odometryY += (actualRobotVx * fieldSin + actualRobotVy * fieldCos) * dtSeconds;
+        odometryRotationRad = Math.toRadians(gyroYawDegrees);
     }
 
     /**
@@ -215,5 +249,19 @@ public class DrivetrainIOSim implements DrivetrainIO {
      */
     public double getGyroYawDegrees() {
         return gyroYawDegrees;
+    }
+
+    /**
+     * Gets the total current draw from all simulated motors.
+     *
+     * @return Total current draw in amps
+     */
+    public double getTotalCurrentDrawAmps() {
+        double total = 0.0;
+        for (int i = 0; i < MODULE_COUNT; i++) {
+            total += Math.abs(driveMotorSims[i].getCurrentDrawAmps());
+            total += Math.abs(steerMotorSims[i].getCurrentDrawAmps());
+        }
+        return total;
     }
 }
