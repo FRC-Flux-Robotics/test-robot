@@ -25,6 +25,15 @@ public final class Constants {
 
     /** Default log level: DEBUG, INFO, WARN, ERROR, or OFF. */
     public static final String DEFAULT_LOG_LEVEL = "INFO";
+
+    /** Enable file-based logging for development sessions. */
+    public static final boolean ENABLE_FILE_LOGGING = true;
+
+    /** Directory for log files on real robot (RoboRIO). */
+    public static final String FILE_LOG_DIRECTORY_REAL = "/home/lvuser/logs";
+
+    /** Directory for log files in simulation/development. */
+    public static final String FILE_LOG_DIRECTORY_SIM = "logs";
   }
 
   public static class OperatorConstants {

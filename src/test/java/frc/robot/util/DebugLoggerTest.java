@@ -8,10 +8,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import frc.robot.util.DebugLogger.Level;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 class DebugLoggerTest {
 
@@ -30,6 +35,7 @@ class DebugLoggerTest {
         System.setOut(originalOut);
         DebugLogger.setEnabled(true);
         DebugLogger.setLevel(Level.INFO); // Reset to default
+        DebugLogger.disableFileLogging(); // Ensure file logging is disabled
     }
 
     @Test
@@ -193,5 +199,132 @@ class DebugLoggerTest {
         assertTrue(Level.INFO.getSeverity() < Level.WARN.getSeverity());
         assertTrue(Level.WARN.getSeverity() < Level.ERROR.getSeverity());
         assertTrue(Level.ERROR.getSeverity() < Level.OFF.getSeverity());
+    }
+
+    // File logging tests
+
+    @TempDir
+    Path tempDir;
+
+    @Test
+    void enableFileLoggingCreatesLogFile() {
+        boolean enabled = DebugLogger.enableFileLogging(tempDir.toString());
+
+        assertTrue(enabled, "File logging should be enabled successfully");
+        assertTrue(DebugLogger.isFileLoggingEnabled(), "isFileLoggingEnabled should return true");
+        assertNotNull(DebugLogger.getCurrentLogFile(), "getCurrentLogFile should return path");
+
+        File logFile = new File(DebugLogger.getCurrentLogFile());
+        assertTrue(logFile.exists(), "Log file should exist");
+        assertTrue(logFile.getName().startsWith("debug_"), "Log file should start with debug_");
+        assertTrue(logFile.getName().endsWith(".log"), "Log file should end with .log");
+    }
+
+    @Test
+    void disableFileLoggingClosesFile() {
+        DebugLogger.enableFileLogging(tempDir.toString());
+        String logFilePath = DebugLogger.getCurrentLogFile();
+
+        DebugLogger.disableFileLogging();
+
+        assertFalse(DebugLogger.isFileLoggingEnabled(), "isFileLoggingEnabled should return false");
+        assertNull(DebugLogger.getCurrentLogFile(), "getCurrentLogFile should return null");
+
+        // File should still exist after closing
+        File logFile = new File(logFilePath);
+        assertTrue(logFile.exists(), "Log file should still exist after closing");
+    }
+
+    @Test
+    void messagesAreWrittenToFile() throws IOException {
+        DebugLogger.enableFileLogging(tempDir.toString());
+        String logFilePath = DebugLogger.getCurrentLogFile();
+
+        DebugLogger.info("FileTest", "Test message for file");
+        DebugLogger.flush();
+
+        String content = Files.readString(Path.of(logFilePath));
+        assertTrue(content.contains("[INFO]"), "File should contain INFO level");
+        assertTrue(content.contains("[FileTest]"), "File should contain tag");
+        assertTrue(content.contains("Test message for file"), "File should contain message");
+    }
+
+    @Test
+    void multipleMessagesAreWrittenToFile() throws IOException {
+        DebugLogger.enableFileLogging(tempDir.toString());
+        String logFilePath = DebugLogger.getCurrentLogFile();
+
+        DebugLogger.debug("Test", "Debug message");
+        DebugLogger.info("Test", "Info message");
+        DebugLogger.warn("Test", "Warn message");
+        DebugLogger.error("Test", "Error message");
+        DebugLogger.flush();
+
+        String content = Files.readString(Path.of(logFilePath));
+        assertTrue(content.contains("[DEBUG]"), "File should contain DEBUG");
+        assertTrue(content.contains("[INFO]"), "File should contain INFO");
+        assertTrue(content.contains("[WARN]"), "File should contain WARN");
+        assertTrue(content.contains("[ERROR]"), "File should contain ERROR");
+    }
+
+    @Test
+    void fileLoggingCreatesDirectoryIfNeeded() {
+        Path nestedDir = tempDir.resolve("nested/logs/dir");
+
+        boolean enabled = DebugLogger.enableFileLogging(nestedDir.toString());
+
+        assertTrue(enabled, "File logging should succeed with nested directory");
+        assertTrue(Files.exists(nestedDir), "Nested directory should be created");
+    }
+
+    @Test
+    void closeDisablesFileLogging() {
+        DebugLogger.enableFileLogging(tempDir.toString());
+        assertTrue(DebugLogger.isFileLoggingEnabled());
+
+        DebugLogger.close();
+
+        assertFalse(DebugLogger.isFileLoggingEnabled());
+        assertNull(DebugLogger.getCurrentLogFile());
+    }
+
+    @Test
+    void isFileLoggingEnabledReturnsFalseWhenNotEnabled() {
+        assertFalse(DebugLogger.isFileLoggingEnabled());
+        assertNull(DebugLogger.getCurrentLogFile());
+    }
+
+    @Test
+    void enableFileLoggingTwiceClosesFirstFile() throws IOException {
+        DebugLogger.enableFileLogging(tempDir.toString());
+        String firstFile = DebugLogger.getCurrentLogFile();
+        DebugLogger.info("Test", "First file message");
+        DebugLogger.flush();
+
+        // Small delay to ensure different timestamp
+        try {
+            Thread.sleep(1100);
+        } catch (InterruptedException e) {
+            // Ignore
+        }
+
+        DebugLogger.enableFileLogging(tempDir.toString());
+        String secondFile = DebugLogger.getCurrentLogFile();
+        DebugLogger.info("Test", "Second file message");
+        DebugLogger.flush();
+
+        assertNotEquals(firstFile, secondFile, "Second file should have different path");
+
+        String firstContent = Files.readString(Path.of(firstFile));
+        String secondContent = Files.readString(Path.of(secondFile));
+
+        assertTrue(firstContent.contains("First file message"), "First file should have first message");
+        assertTrue(secondContent.contains("Second file message"), "Second file should have second message");
+    }
+
+    @Test
+    void flushDoesNothingWhenFileLoggingDisabled() {
+        // Should not throw
+        DebugLogger.flush();
     }
 }

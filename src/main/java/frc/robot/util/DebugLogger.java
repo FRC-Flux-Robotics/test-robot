@@ -7,6 +7,12 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Lightweight debug logging utility with configurable log levels.
@@ -46,9 +52,13 @@ public final class DebugLogger {
 
     private static final String DASHBOARD_KEY = "DebugLogLevel";
     private static final long START_TIME_US = RobotController.getFPGATime();
+    private static final DateTimeFormatter FILE_NAME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     private static Level currentLevel = Level.INFO;
     private static boolean enabled = true;
+    private static PrintWriter fileWriter = null;
+    private static String currentLogFile = null;
 
     private DebugLogger() {
         // Utility class - prevent instantiation
@@ -155,6 +165,90 @@ public final class DebugLogger {
         SmartDashboard.putString(DASHBOARD_KEY, currentLevel.name());
     }
 
+    /**
+     * Enable file-based logging to the specified directory.
+     *
+     * <p>Creates a new log file with timestamp in the filename. If the directory does not exist, it
+     * will be created. If file creation fails, logging continues to console only.
+     *
+     * @param directory The directory path where log files should be created
+     * @return true if file logging was enabled successfully, false otherwise
+     */
+    public static boolean enableFileLogging(String directory) {
+        if (fileWriter != null) {
+            // Already enabled, close existing writer first
+            disableFileLogging();
+        }
+
+        try {
+            File logDir = new File(directory);
+            if (!logDir.exists() && !logDir.mkdirs()) {
+                System.err.println("[DebugLogger] Failed to create log directory: " + directory);
+                return false;
+            }
+
+            String timestamp = LocalDateTime.now().format(FILE_NAME_FORMATTER);
+            String filename = "debug_" + timestamp + ".log";
+            File logFile = new File(logDir, filename);
+            currentLogFile = logFile.getAbsolutePath();
+
+            fileWriter = new PrintWriter(new FileWriter(logFile, true), true);
+            info("DebugLogger", "File logging enabled: " + currentLogFile);
+            return true;
+        } catch (IOException e) {
+            System.err.println("[DebugLogger] Failed to create log file: " + e.getMessage());
+            fileWriter = null;
+            currentLogFile = null;
+            return false;
+        }
+    }
+
+    /**
+     * Disable file-based logging and close the log file.
+     */
+    public static void disableFileLogging() {
+        if (fileWriter != null) {
+            info("DebugLogger", "File logging disabled");
+            fileWriter.close();
+            fileWriter = null;
+            currentLogFile = null;
+        }
+    }
+
+    /**
+     * Check if file logging is currently enabled.
+     *
+     * @return true if file logging is enabled
+     */
+    public static boolean isFileLoggingEnabled() {
+        return fileWriter != null;
+    }
+
+    /**
+     * Get the path to the current log file.
+     *
+     * @return The absolute path to the current log file, or null if file logging is disabled
+     */
+    public static String getCurrentLogFile() {
+        return currentLogFile;
+    }
+
+    /**
+     * Flush any buffered log data to file. Call this periodically or before shutdown.
+     */
+    public static void flush() {
+        if (fileWriter != null) {
+            fileWriter.flush();
+        }
+    }
+
+    /**
+     * Close the logger, releasing any resources. Should be called on robot shutdown.
+     */
+    public static void close() {
+        disableFileLogging();
+    }
+
     private static void log(Level level, String tag, String message) {
         if (!enabled || level.getSeverity() < currentLevel.getSeverity()) {
             return;
@@ -171,6 +265,14 @@ public final class DebugLogger {
         String timestamp = String.format("%.3f", elapsedSeconds);
         String levelStr = level.name();
 
-        System.out.println("[" + timestamp + "] [" + levelStr + "] [" + tag + "] " + message);
+        String formattedMessage = "[" + timestamp + "] [" + levelStr + "] [" + tag + "] " + message;
+
+        // Console output
+        System.out.println(formattedMessage);
+
+        // File output (if enabled)
+        if (fileWriter != null) {
+            fileWriter.println(formattedMessage);
+        }
     }
 }
