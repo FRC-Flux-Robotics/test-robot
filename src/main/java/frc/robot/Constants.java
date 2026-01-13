@@ -19,6 +19,14 @@ public final class Constants {
     public static final double AutoModeDriveTime = 2.2;  // In seconds
   }
 
+  public static final class LoggingConstants {
+    /** Enable debug console logging. Set to false to disable all debug output. */
+    public static final boolean ENABLE_DEBUG_LOGGING = true;
+
+    /** Default log level: DEBUG, INFO, WARN, ERROR, or OFF. */
+    public static final String DEFAULT_LOG_LEVEL = "INFO";
+  }
+
   public static class OperatorConstants {
     public static final int DriverControllerPort = 0;
     public static final int OperatorControllerPort = 1;
