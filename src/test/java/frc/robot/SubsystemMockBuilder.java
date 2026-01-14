@@ -113,8 +113,7 @@ public class SubsystemMockBuilder {
      * @return This builder for chaining
      */
     public SubsystemMockBuilder withDrivePositions(double[] positions) {
-        System.arraycopy(positions, 0, this.drivePositions, 0,
-            Math.min(positions.length, 4));
+        System.arraycopy(positions, 0, this.drivePositions, 0, Math.min(positions.length, 4));
         return this;
     }
 
@@ -138,8 +137,7 @@ public class SubsystemMockBuilder {
      * @return This builder for chaining
      */
     public SubsystemMockBuilder withDriveVelocities(double[] velocities) {
-        System.arraycopy(velocities, 0, this.driveVelocities, 0,
-            Math.min(velocities.length, 4));
+        System.arraycopy(velocities, 0, this.driveVelocities, 0, Math.min(velocities.length, 4));
         return this;
     }
 
@@ -163,8 +161,7 @@ public class SubsystemMockBuilder {
      * @return This builder for chaining
      */
     public SubsystemMockBuilder withDriveCurrents(double[] currents) {
-        System.arraycopy(currents, 0, this.driveCurrents, 0,
-            Math.min(currents.length, 4));
+        System.arraycopy(currents, 0, this.driveCurrents, 0, Math.min(currents.length, 4));
         return this;
     }
 
@@ -188,8 +185,7 @@ public class SubsystemMockBuilder {
      * @return This builder for chaining
      */
     public SubsystemMockBuilder withSteerPositions(double[] positions) {
-        System.arraycopy(positions, 0, this.steerPositions, 0,
-            Math.min(positions.length, 4));
+        System.arraycopy(positions, 0, this.steerPositions, 0, Math.min(positions.length, 4));
         return this;
     }
 
@@ -213,8 +209,7 @@ public class SubsystemMockBuilder {
      * @return This builder for chaining
      */
     public SubsystemMockBuilder withSteerVelocities(double[] velocities) {
-        System.arraycopy(velocities, 0, this.steerVelocities, 0,
-            Math.min(velocities.length, 4));
+        System.arraycopy(velocities, 0, this.steerVelocities, 0, Math.min(velocities.length, 4));
         return this;
     }
 
@@ -225,8 +220,7 @@ public class SubsystemMockBuilder {
      * @return This builder for chaining
      */
     public SubsystemMockBuilder withSteerCurrents(double[] currents) {
-        System.arraycopy(currents, 0, this.steerCurrents, 0,
-            Math.min(currents.length, 4));
+        System.arraycopy(currents, 0, this.steerCurrents, 0, Math.min(currents.length, 4));
         return this;
     }
 
@@ -237,18 +231,18 @@ public class SubsystemMockBuilder {
      */
     public DrivetrainIOMock buildDrivetrainIO() {
         return new DrivetrainIOMock()
-            .withOdometry(position)
-            .withGyroYaw(gyroYaw)
-            .withGyroYawRate(gyroYawRate)
-            .withGyroPitch(gyroPitch)
-            .withGyroRoll(gyroRoll)
-            .withGyroConnected(gyroConnected)
-            .withDrivePositions(drivePositions)
-            .withDriveVelocities(driveVelocities)
-            .withDriveCurrents(driveCurrents)
-            .withSteerPositions(steerPositions)
-            .withSteerVelocities(steerVelocities)
-            .withSteerCurrents(steerCurrents);
+                .withOdometry(position)
+                .withGyroYaw(gyroYaw)
+                .withGyroYawRate(gyroYawRate)
+                .withGyroPitch(gyroPitch)
+                .withGyroRoll(gyroRoll)
+                .withGyroConnected(gyroConnected)
+                .withDrivePositions(drivePositions)
+                .withDriveVelocities(driveVelocities)
+                .withDriveCurrents(driveCurrents)
+                .withSteerPositions(steerPositions)
+                .withSteerVelocities(steerVelocities)
+                .withSteerCurrents(steerCurrents);
     }
 
     /**

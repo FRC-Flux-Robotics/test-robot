@@ -3,17 +3,15 @@ package frc.robot;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.ctre.phoenix6.swerve.SwerveRequest;
+import frc.robot.autos.DriveForwardAuto;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.ctre.phoenix6.swerve.SwerveRequest;
-
-import frc.robot.autos.DriveForwardAuto;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /**
  * Unit tests for DriveForwardAuto command.
@@ -40,15 +38,15 @@ class DriveForwardAutoTest {
     @Test
     void constructor_requiresDrivetrain() {
         // Verify the command requires the drivetrain subsystem
-        assertTrue(command.getRequirements().contains(mockDrivetrain),
-            "DriveForwardAuto should require the drivetrain subsystem");
+        assertTrue(
+                command.getRequirements().contains(mockDrivetrain),
+                "DriveForwardAuto should require the drivetrain subsystem");
     }
 
     @Test
     void constructor_hasExactlyOneRequirement() {
         // Command should only require the drivetrain, nothing else
-        assertEquals(1, command.getRequirements().size(),
-            "DriveForwardAuto should have exactly one requirement");
+        assertEquals(1, command.getRequirements().size(), "DriveForwardAuto should have exactly one requirement");
     }
 
     @Test
@@ -56,8 +54,7 @@ class DriveForwardAutoTest {
         // Before initialize is called, timer hasn't started
         // After initialize, timer starts but hasn't reached drive time
         command.initialize();
-        assertFalse(command.isFinished(),
-            "Command should not be finished immediately after initialize");
+        assertFalse(command.isFinished(), "Command should not be finished immediately after initialize");
     }
 
     @Test
@@ -93,11 +90,13 @@ class DriveForwardAutoTest {
     @Test
     void initialize_canBeCalledMultipleTimes() {
         // Should not throw when called multiple times (timer.restart handles this)
-        assertDoesNotThrow(() -> {
-            command.initialize();
-            command.initialize();
-            command.initialize();
-        }, "initialize should be safely callable multiple times");
+        assertDoesNotThrow(
+                () -> {
+                    command.initialize();
+                    command.initialize();
+                    command.initialize();
+                },
+                "initialize should be safely callable multiple times");
     }
 
     @Test

@@ -66,9 +66,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withGyro_setsGyroState() {
-        DrivetrainIOMock mock = builder
-            .withGyro(45.0, true)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withGyro(45.0, true).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -78,9 +76,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withGyroDisconnected_setsDisconnected() {
-        DrivetrainIOMock mock = builder
-            .withGyro(0.0, false)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withGyro(0.0, false).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -89,9 +85,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withGyroYawRate_setsYawRate() {
-        DrivetrainIOMock mock = builder
-            .withGyroYawRate(30.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withGyroYawRate(30.0).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -100,9 +94,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withGyroPitch_setsPitch() {
-        DrivetrainIOMock mock = builder
-            .withGyroPitch(15.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withGyroPitch(15.0).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -111,9 +103,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withGyroRoll_setsRoll() {
-        DrivetrainIOMock mock = builder
-            .withGyroRoll(-10.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withGyroRoll(-10.0).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -123,9 +113,7 @@ class SubsystemMockBuilderTest {
     @Test
     void buildDrivetrainIO_withDrivePositionsArray_setsPositions() {
         double[] positions = {1.0, 2.0, 3.0, 4.0};
-        DrivetrainIOMock mock = builder
-            .withDrivePositions(positions)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withDrivePositions(positions).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -137,9 +125,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withDrivePositionsUniform_setsAllPositions() {
-        DrivetrainIOMock mock = builder
-            .withDrivePositions(5.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withDrivePositions(5.0).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -151,9 +137,7 @@ class SubsystemMockBuilderTest {
     @Test
     void buildDrivetrainIO_withDriveVelocitiesArray_setsVelocities() {
         double[] velocities = {10.0, 20.0, 30.0, 40.0};
-        DrivetrainIOMock mock = builder
-            .withDriveVelocities(velocities)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withDriveVelocities(velocities).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -163,9 +147,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withDriveVelocitiesUniform_setsAllVelocities() {
-        DrivetrainIOMock mock = builder
-            .withDriveVelocities(15.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withDriveVelocities(15.0).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -177,9 +159,7 @@ class SubsystemMockBuilderTest {
     @Test
     void buildDrivetrainIO_withDriveCurrentsArray_setsCurrents() {
         double[] currents = {5.0, 10.0, 15.0, 20.0};
-        DrivetrainIOMock mock = builder
-            .withDriveCurrents(currents)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withDriveCurrents(currents).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -189,9 +169,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withDriveCurrentsUniform_setsAllCurrents() {
-        DrivetrainIOMock mock = builder
-            .withDriveCurrents(25.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withDriveCurrents(25.0).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -203,9 +181,7 @@ class SubsystemMockBuilderTest {
     @Test
     void buildDrivetrainIO_withSteerPositions_setsPositions() {
         double[] positions = {0.1, 0.2, 0.3, 0.4};
-        DrivetrainIOMock mock = builder
-            .withSteerPositions(positions)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withSteerPositions(positions).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -215,9 +191,7 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_withSteerPositionsUniform_setsAllPositions() {
-        DrivetrainIOMock mock = builder
-            .withSteerPositions(0.5)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.withSteerPositions(0.5).buildDrivetrainIO();
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
 
@@ -228,13 +202,12 @@ class SubsystemMockBuilderTest {
 
     @Test
     void buildDrivetrainIO_chainedConfiguration_allValuesSet() {
-        DrivetrainIOMock mock = builder
-            .atPosition(1.0, 2.0, 90.0)
-            .withGyro(45.0, true)
-            .withGyroYawRate(10.0)
-            .withDriveCurrents(30.0)
-            .withDriveVelocities(100.0)
-            .buildDrivetrainIO();
+        DrivetrainIOMock mock = builder.atPosition(1.0, 2.0, 90.0)
+                .withGyro(45.0, true)
+                .withGyroYawRate(10.0)
+                .withDriveCurrents(30.0)
+                .withDriveVelocities(100.0)
+                .buildDrivetrainIO();
 
         DrivetrainIO.DrivetrainIOInputs inputs = new DrivetrainIO.DrivetrainIOInputs();
         mock.updateInputs(inputs);
@@ -260,9 +233,7 @@ class SubsystemMockBuilderTest {
     @Test
     void buildMockDrivetrain_atPosition_returnsConfiguredPosition() {
         Pose2d expectedPose = new Pose2d(5.0, 6.0, Rotation2d.fromDegrees(180.0));
-        CommandSwerveDrivetrain mock = builder
-            .atPosition(expectedPose)
-            .buildMockDrivetrain();
+        CommandSwerveDrivetrain mock = builder.atPosition(expectedPose).buildMockDrivetrain();
 
         Pose2d position = mock.getPosition();
         assertEquals(5.0, position.getX(), 0.001);

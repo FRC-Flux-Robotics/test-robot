@@ -5,11 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.TestFixtures;
+import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 /**
  * Unit tests for DrivetrainIOMock.
@@ -168,10 +167,7 @@ class DrivetrainIOMockTest {
 
     @Test
     void fluentChaining_returnsThisForChaining() {
-        DrivetrainIOMock result = mock
-            .withGyroYaw(10.0)
-            .withGyroYawRate(5.0)
-            .withOdometry(1.0, 2.0, 0.0);
+        DrivetrainIOMock result = mock.withGyroYaw(10.0).withGyroYawRate(5.0).withOdometry(1.0, 2.0, 0.0);
 
         assertSame(mock, result);
     }

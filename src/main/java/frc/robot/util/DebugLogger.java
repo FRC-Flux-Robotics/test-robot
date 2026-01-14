@@ -52,8 +52,7 @@ public final class DebugLogger {
 
     private static final String DASHBOARD_KEY = "DebugLogLevel";
     private static final long START_TIME_US = RobotController.getFPGATime();
-    private static final DateTimeFormatter FILE_NAME_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+    private static final DateTimeFormatter FILE_NAME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     private static Level currentLevel = Level.INFO;
     private static boolean enabled = true;

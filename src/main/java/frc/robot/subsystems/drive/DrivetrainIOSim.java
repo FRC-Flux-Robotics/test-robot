@@ -55,22 +55,18 @@ public class DrivetrainIOSim implements DrivetrainIO {
         // Initialize drive motor simulations
         for (int i = 0; i < MODULE_COUNT; i++) {
             driveMotorSims[i] = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(
-                    DRIVE_MOTOR,
-                    SimulationConstants.DRIVE_MOTOR_INERTIA_KG_M2,
-                    SimulationConstants.DRIVE_GEAR_RATIO
-                ),
-                DRIVE_MOTOR
-            );
+                    LinearSystemId.createDCMotorSystem(
+                            DRIVE_MOTOR,
+                            SimulationConstants.DRIVE_MOTOR_INERTIA_KG_M2,
+                            SimulationConstants.DRIVE_GEAR_RATIO),
+                    DRIVE_MOTOR);
 
             steerMotorSims[i] = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(
-                    STEER_MOTOR,
-                    SimulationConstants.STEER_MOTOR_INERTIA_KG_M2,
-                    SimulationConstants.STEER_GEAR_RATIO
-                ),
-                STEER_MOTOR
-            );
+                    LinearSystemId.createDCMotorSystem(
+                            STEER_MOTOR,
+                            SimulationConstants.STEER_MOTOR_INERTIA_KG_M2,
+                            SimulationConstants.STEER_GEAR_RATIO),
+                    STEER_MOTOR);
         }
     }
 
@@ -165,10 +161,10 @@ public class DrivetrainIOSim implements DrivetrainIO {
         double halfTrack = SimulationConstants.TRACK_WIDTH_METERS / 2.0;
         double halfBase = SimulationConstants.WHEEL_BASE_METERS / 2.0;
         double[][] moduleOffsets = {
-            {halfBase, halfTrack},   // FL
-            {halfBase, -halfTrack},  // FR
-            {-halfBase, halfTrack},  // BL
-            {-halfBase, -halfTrack}  // BR
+            {halfBase, halfTrack}, // FL
+            {halfBase, -halfTrack}, // FR
+            {-halfBase, halfTrack}, // BL
+            {-halfBase, -halfTrack} // BR
         };
 
         // Calculate and apply physics for each module
@@ -193,8 +189,9 @@ public class DrivetrainIOSim implements DrivetrainIO {
             // Drive motor control - voltage based on desired wheel speed
             double wheelRadPerSec = moduleSpeed / SimulationConstants.WHEEL_RADIUS_METERS;
             // Simple feedforward voltage (V = kV * velocity)
-            double driveVoltage = (wheelRadPerSec / (SimulationConstants.MAX_SPEED_MPS /
-                SimulationConstants.WHEEL_RADIUS_METERS)) * 12.0;
+            double driveVoltage =
+                    (wheelRadPerSec / (SimulationConstants.MAX_SPEED_MPS / SimulationConstants.WHEEL_RADIUS_METERS))
+                            * 12.0;
             driveVoltage = MathUtil.clamp(driveVoltage, -12.0, 12.0);
             driveMotorSims[i].setInputVoltage(driveVoltage);
             driveMotorSims[i].update(dtSeconds);
@@ -208,8 +205,8 @@ public class DrivetrainIOSim implements DrivetrainIO {
         avgDriveVelRadPerSec /= MODULE_COUNT;
 
         // Convert motor velocity to wheel velocity
-        double wheelVelocityMps = (avgDriveVelRadPerSec / SimulationConstants.DRIVE_GEAR_RATIO)
-            * SimulationConstants.WHEEL_RADIUS_METERS;
+        double wheelVelocityMps =
+                (avgDriveVelRadPerSec / SimulationConstants.DRIVE_GEAR_RATIO) * SimulationConstants.WHEEL_RADIUS_METERS;
 
         // Use requested omega directly for rotation (simplified)
         gyroYawRateDegPS = Math.toDegrees(requestedOmegaRadPS);

@@ -188,9 +188,7 @@ class DebugLoggerTest {
 
         String output = outContent.toString();
         // Timestamp format is [X.XXX] - may be negative in tests due to FPGA time initialization
-        assertTrue(
-                output.matches("(?s)\\[-?\\d+\\.\\d{3}\\].*"),
-                "Output should start with timestamp, got: " + output);
+        assertTrue(output.matches("(?s)\\[-?\\d+\\.\\d{3}\\].*"), "Output should start with timestamp, got: " + output);
     }
 
     @Test

@@ -186,10 +186,16 @@ public abstract class SimulationTestBase {
         double dx = inputs.odometryX - expected.getX();
         double dy = inputs.odometryY - expected.getY();
         double distance = Math.sqrt(dx * dx + dy * dy);
-        assertTrue(distance <= toleranceMeters,
-            String.format("Position (%.3f, %.3f) should be within %.3f m of (%.3f, %.3f), actual distance: %.3f m",
-                inputs.odometryX, inputs.odometryY, toleranceMeters,
-                expected.getX(), expected.getY(), distance));
+        assertTrue(
+                distance <= toleranceMeters,
+                String.format(
+                        "Position (%.3f, %.3f) should be within %.3f m of (%.3f, %.3f), actual distance: %.3f m",
+                        inputs.odometryX,
+                        inputs.odometryY,
+                        toleranceMeters,
+                        expected.getX(),
+                        expected.getY(),
+                        distance));
     }
 
     /**
@@ -202,9 +208,11 @@ public abstract class SimulationTestBase {
         updateInputs();
         double actualDegrees = Math.toDegrees(inputs.odometryRotationRad);
         double diff = Math.abs(normalizeAngleDegrees(actualDegrees - expectedDegrees));
-        assertTrue(diff <= toleranceDegrees,
-            String.format("Heading %.1f deg should be within %.1f deg of %.1f deg, actual diff: %.1f deg",
-                actualDegrees, toleranceDegrees, expectedDegrees, diff));
+        assertTrue(
+                diff <= toleranceDegrees,
+                String.format(
+                        "Heading %.1f deg should be within %.1f deg of %.1f deg, actual diff: %.1f deg",
+                        actualDegrees, toleranceDegrees, expectedDegrees, diff));
     }
 
     /**
@@ -215,9 +223,11 @@ public abstract class SimulationTestBase {
     protected void assertDriveCurrentsBelow(double maxAmps) {
         updateInputs();
         for (int i = 0; i < 4; i++) {
-            assertTrue(inputs.driveCurrentAmps[i] <= maxAmps,
-                String.format("Module %d drive current %.1f A exceeds limit %.1f A",
-                    i, inputs.driveCurrentAmps[i], maxAmps));
+            assertTrue(
+                    inputs.driveCurrentAmps[i] <= maxAmps,
+                    String.format(
+                            "Module %d drive current %.1f A exceeds limit %.1f A",
+                            i, inputs.driveCurrentAmps[i], maxAmps));
         }
     }
 
@@ -229,9 +239,11 @@ public abstract class SimulationTestBase {
     protected void assertSteerCurrentsBelow(double maxAmps) {
         updateInputs();
         for (int i = 0; i < 4; i++) {
-            assertTrue(inputs.steerCurrentAmps[i] <= maxAmps,
-                String.format("Module %d steer current %.1f A exceeds limit %.1f A",
-                    i, inputs.steerCurrentAmps[i], maxAmps));
+            assertTrue(
+                    inputs.steerCurrentAmps[i] <= maxAmps,
+                    String.format(
+                            "Module %d steer current %.1f A exceeds limit %.1f A",
+                            i, inputs.steerCurrentAmps[i], maxAmps));
         }
     }
 
@@ -259,9 +271,11 @@ public abstract class SimulationTestBase {
     protected void assertStopped(double toleranceRadPerSec) {
         updateInputs();
         for (int i = 0; i < 4; i++) {
-            assertTrue(Math.abs(inputs.driveVelocitiesRadPerSec[i]) <= toleranceRadPerSec,
-                String.format("Module %d velocity %.2f rad/s should be near zero (tolerance %.2f)",
-                    i, inputs.driveVelocitiesRadPerSec[i], toleranceRadPerSec));
+            assertTrue(
+                    Math.abs(inputs.driveVelocitiesRadPerSec[i]) <= toleranceRadPerSec,
+                    String.format(
+                            "Module %d velocity %.2f rad/s should be near zero (tolerance %.2f)",
+                            i, inputs.driveVelocitiesRadPerSec[i], toleranceRadPerSec));
         }
     }
 

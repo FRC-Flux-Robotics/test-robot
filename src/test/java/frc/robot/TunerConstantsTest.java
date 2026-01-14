@@ -3,12 +3,10 @@ package frc.robot;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static org.junit.jupiter.api.Assertions.*;
 
+import frc.robot.generated.TunerConstants;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
-
-import frc.robot.generated.TunerConstants;
 
 /**
  * Unit tests for TunerConstants (Phoenix 6 generated swerve configuration).

@@ -122,8 +122,8 @@ public class Sensitivity {
      * @return the original value if zero or above minimum, otherwise minValue with original sign
      */
     public static double minLimit(double value, double minValue) {
-      double abs = Math.abs(value);
-      double sign = value > 0 ? 1 : -1;
-      return abs > 0 && abs < minValue ? sign * minValue : value;
+        double abs = Math.abs(value);
+        double sign = value > 0 ? 1 : -1;
+        return abs > 0 && abs < minValue ? sign * minValue : value;
     }
 }

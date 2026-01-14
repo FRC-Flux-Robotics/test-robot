@@ -12,7 +12,6 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
@@ -61,17 +60,15 @@ public class DrivetrainIOTalonFX implements DrivetrainIO {
      * @param gyro The Pigeon2 gyro used by the drivetrain
      */
     @SuppressWarnings("unchecked")
-    public DrivetrainIOTalonFX(
-            SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain,
-            Pigeon2 gyro) {
+    public DrivetrainIOTalonFX(SwerveDrivetrain<TalonFX, TalonFX, CANcoder> drivetrain, Pigeon2 gyro) {
         this.drivetrain = drivetrain;
         this.gyro = gyro;
 
         // Initialize swerve requests
-        this.fieldCentricRequest = new SwerveRequest.FieldCentric()
-                .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-        this.robotCentricRequest = new SwerveRequest.RobotCentric()
-                .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+        this.fieldCentricRequest =
+                new SwerveRequest.FieldCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+        this.robotCentricRequest =
+                new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
         this.idleRequest = new SwerveRequest.Idle();
 
         // Initialize signal arrays
@@ -113,15 +110,42 @@ public class DrivetrainIOTalonFX implements DrivetrainIO {
     public void updateInputs(DrivetrainIOInputs inputs) {
         // Refresh all signals in one batch for efficiency
         BaseStatusSignal.refreshAll(
-                gyroYaw, gyroYawRate, gyroPitch, gyroRoll,
-                drivePositionSignals[0], driveVelocitySignals[0], driveVoltageSignals[0], driveCurrentSignals[0],
-                drivePositionSignals[1], driveVelocitySignals[1], driveVoltageSignals[1], driveCurrentSignals[1],
-                drivePositionSignals[2], driveVelocitySignals[2], driveVoltageSignals[2], driveCurrentSignals[2],
-                drivePositionSignals[3], driveVelocitySignals[3], driveVoltageSignals[3], driveCurrentSignals[3],
-                steerPositionSignals[0], steerVelocitySignals[0], steerVoltageSignals[0], steerCurrentSignals[0],
-                steerPositionSignals[1], steerVelocitySignals[1], steerVoltageSignals[1], steerCurrentSignals[1],
-                steerPositionSignals[2], steerVelocitySignals[2], steerVoltageSignals[2], steerCurrentSignals[2],
-                steerPositionSignals[3], steerVelocitySignals[3], steerVoltageSignals[3], steerCurrentSignals[3]);
+                gyroYaw,
+                gyroYawRate,
+                gyroPitch,
+                gyroRoll,
+                drivePositionSignals[0],
+                driveVelocitySignals[0],
+                driveVoltageSignals[0],
+                driveCurrentSignals[0],
+                drivePositionSignals[1],
+                driveVelocitySignals[1],
+                driveVoltageSignals[1],
+                driveCurrentSignals[1],
+                drivePositionSignals[2],
+                driveVelocitySignals[2],
+                driveVoltageSignals[2],
+                driveCurrentSignals[2],
+                drivePositionSignals[3],
+                driveVelocitySignals[3],
+                driveVoltageSignals[3],
+                driveCurrentSignals[3],
+                steerPositionSignals[0],
+                steerVelocitySignals[0],
+                steerVoltageSignals[0],
+                steerCurrentSignals[0],
+                steerPositionSignals[1],
+                steerVelocitySignals[1],
+                steerVoltageSignals[1],
+                steerCurrentSignals[1],
+                steerPositionSignals[2],
+                steerVelocitySignals[2],
+                steerVoltageSignals[2],
+                steerCurrentSignals[2],
+                steerPositionSignals[3],
+                steerVelocitySignals[3],
+                steerVoltageSignals[3],
+                steerCurrentSignals[3]);
 
         // Gyro data
         inputs.gyroConnected = BaseStatusSignal.isAllGood(gyroYaw, gyroYawRate, gyroPitch, gyroRoll);
@@ -134,15 +158,15 @@ public class DrivetrainIOTalonFX implements DrivetrainIO {
         for (int i = 0; i < MODULE_COUNT; i++) {
             // Drive motor data - convert rotations to radians
             inputs.drivePositionsRad[i] = drivePositionSignals[i].getValue().in(Rotations) * ROTATIONS_TO_RADIANS;
-            inputs.driveVelocitiesRadPerSec[i] = driveVelocitySignals[i].getValue().in(RotationsPerSecond)
-                    * ROTATIONS_TO_RADIANS;
+            inputs.driveVelocitiesRadPerSec[i] =
+                    driveVelocitySignals[i].getValue().in(RotationsPerSecond) * ROTATIONS_TO_RADIANS;
             inputs.driveAppliedVolts[i] = driveVoltageSignals[i].getValue().in(Volts);
             inputs.driveCurrentAmps[i] = driveCurrentSignals[i].getValue().in(Amps);
 
             // Steer motor data - convert rotations to radians
             inputs.steerPositionsRad[i] = steerPositionSignals[i].getValue().in(Rotations) * ROTATIONS_TO_RADIANS;
-            inputs.steerVelocitiesRadPerSec[i] = steerVelocitySignals[i].getValue().in(RotationsPerSecond)
-                    * ROTATIONS_TO_RADIANS;
+            inputs.steerVelocitiesRadPerSec[i] =
+                    steerVelocitySignals[i].getValue().in(RotationsPerSecond) * ROTATIONS_TO_RADIANS;
             inputs.steerAppliedVolts[i] = steerVoltageSignals[i].getValue().in(Volts);
             inputs.steerCurrentAmps[i] = steerCurrentSignals[i].getValue().in(Amps);
         }
@@ -156,20 +180,18 @@ public class DrivetrainIOTalonFX implements DrivetrainIO {
 
     @Override
     public void driveFieldCentric(double vxMetersPerSec, double vyMetersPerSec, double omegaRadPerSec) {
-        drivetrain.setControl(
-                fieldCentricRequest
-                        .withVelocityX(vxMetersPerSec)
-                        .withVelocityY(vyMetersPerSec)
-                        .withRotationalRate(omegaRadPerSec));
+        drivetrain.setControl(fieldCentricRequest
+                .withVelocityX(vxMetersPerSec)
+                .withVelocityY(vyMetersPerSec)
+                .withRotationalRate(omegaRadPerSec));
     }
 
     @Override
     public void driveRobotCentric(double vxMetersPerSec, double vyMetersPerSec, double omegaRadPerSec) {
-        drivetrain.setControl(
-                robotCentricRequest
-                        .withVelocityX(vxMetersPerSec)
-                        .withVelocityY(vyMetersPerSec)
-                        .withRotationalRate(omegaRadPerSec));
+        drivetrain.setControl(robotCentricRequest
+                .withVelocityX(vxMetersPerSec)
+                .withVelocityY(vyMetersPerSec)
+                .withRotationalRate(omegaRadPerSec));
     }
 
     @Override

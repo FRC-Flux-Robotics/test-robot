@@ -18,8 +18,7 @@ class SensitivityTunerTest {
 
     @Test
     void transfer_appliesSensitivityCurve() {
-        SensitivityTuner tuner = new SensitivityTuner("Test_",
-            0.1, 0.5, 0.1, 0.5, 1.0);
+        SensitivityTuner tuner = new SensitivityTuner("Test_", 0.1, 0.5, 0.1, 0.5, 1.0);
 
         // Below deadzone should return 0
         assertEquals(0.0, tuner.transfer(0.05), 0.0001);
@@ -33,8 +32,7 @@ class SensitivityTunerTest {
 
     @Test
     void transfer_handlesNegativeInput() {
-        SensitivityTuner tuner = new SensitivityTuner("Neg_",
-            0.1, 0.5, 0.1, 0.5, 1.0);
+        SensitivityTuner tuner = new SensitivityTuner("Neg_", 0.1, 0.5, 0.1, 0.5, 1.0);
 
         // Negative below deadzone
         assertEquals(0.0, tuner.transfer(-0.05), 0.0001);
@@ -46,8 +44,7 @@ class SensitivityTunerTest {
     @Test
     void constructor_publishesToSmartDashboard() {
         // Create with unique prefix to avoid conflicts
-        SensitivityTuner tuner = new SensitivityTuner("Unique_",
-            0.02, 0.6, 0.1, 0.4, 0.8);
+        SensitivityTuner tuner = new SensitivityTuner("Unique_", 0.02, 0.6, 0.1, 0.4, 0.8);
 
         // Just verify it doesn't throw - SmartDashboard is initialized
         double result = tuner.transfer(0.5);
@@ -56,10 +53,8 @@ class SensitivityTunerTest {
 
     @Test
     void multipleInstances_withDifferentPrefixes_coexist() {
-        SensitivityTuner tuner1 = new SensitivityTuner("A_",
-            0.1, 0.5, 0.1, 0.5, 1.0);
-        SensitivityTuner tuner2 = new SensitivityTuner("B_",
-            0.2, 0.6, 0.2, 0.4, 0.8);
+        SensitivityTuner tuner1 = new SensitivityTuner("A_", 0.1, 0.5, 0.1, 0.5, 1.0);
+        SensitivityTuner tuner2 = new SensitivityTuner("B_", 0.2, 0.6, 0.2, 0.4, 0.8);
 
         // Each should behave according to its own parameters
         double result1 = tuner1.transfer(0.15);

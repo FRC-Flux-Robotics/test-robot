@@ -61,22 +61,26 @@ public final class RobotConfig {
      * Uses "Drivetrain" CANivore bus with Pigeon ID 20.
      */
     public static final RobotConfig TestRobot = new RobotConfig(
-        "Drivetrain", "rio", 20,
-        new SwerveModuleConfig(1, 2, 24, -0.03173828125, 11.5, 11.5, InvertLeftSide, false, false),
-        new SwerveModuleConfig(19, 18, 23, -0.455322265625, 11.5, -11.5, InvertRightSide, false, false),
-        new SwerveModuleConfig(4, 3, 25, -0.12744140625, -11.5, 11.5, InvertLeftSide, false, false),
-        new SwerveModuleConfig(16, 17, 26, 0.115478515625, -11.5, -11.5, InvertRightSide, false, false));
+            "Drivetrain",
+            "rio",
+            20,
+            new SwerveModuleConfig(1, 2, 24, -0.03173828125, 11.5, 11.5, InvertLeftSide, false, false),
+            new SwerveModuleConfig(19, 18, 23, -0.455322265625, 11.5, -11.5, InvertRightSide, false, false),
+            new SwerveModuleConfig(4, 3, 25, -0.12744140625, -11.5, 11.5, InvertLeftSide, false, false),
+            new SwerveModuleConfig(16, 17, 26, 0.115478515625, -11.5, -11.5, InvertRightSide, false, false));
 
     /**
      * Practice robot configuration.
      * Uses "CANdace" CANivore bus with Pigeon ID 24.
      */
     public static final RobotConfig PracticeRobot = new RobotConfig(
-        "CANdace", "rio", 24,
-        new SwerveModuleConfig(7, 8, 23, 0.124267578125, 11.5, 11.5, InvertLeftSide, false, false),
-        new SwerveModuleConfig(1, 2, 20, -0.291015625, 11.5, -11.5, InvertRightSide, false, false),
-        new SwerveModuleConfig(5, 6, 22, 0.048828125, -11.5, 11.5, InvertLeftSide, false, false),
-        new SwerveModuleConfig(3, 4, 21, -0.371826171875, -11.5, -11.5, InvertRightSide, false, false));
+            "CANdace",
+            "rio",
+            24,
+            new SwerveModuleConfig(7, 8, 23, 0.124267578125, 11.5, 11.5, InvertLeftSide, false, false),
+            new SwerveModuleConfig(1, 2, 20, -0.291015625, 11.5, -11.5, InvertRightSide, false, false),
+            new SwerveModuleConfig(5, 6, 22, 0.048828125, -11.5, 11.5, InvertLeftSide, false, false),
+            new SwerveModuleConfig(3, 4, 21, -0.371826171875, -11.5, -11.5, InvertRightSide, false, false));
 
     /**
      * Creates a new robot configuration with the specified hardware layout.
@@ -89,8 +93,14 @@ public final class RobotConfig {
      * @param bl back-left swerve module configuration
      * @param br back-right swerve module configuration
      */
-    public RobotConfig(String driveCANBus, String systemCANBus, int pigeonId,
-        SwerveModuleConfig fl, SwerveModuleConfig fr, SwerveModuleConfig bl, SwerveModuleConfig br) {
+    public RobotConfig(
+            String driveCANBus,
+            String systemCANBus,
+            int pigeonId,
+            SwerveModuleConfig fl,
+            SwerveModuleConfig fr,
+            SwerveModuleConfig bl,
+            SwerveModuleConfig br) {
         // Validate CAN bus names
         if (driveCANBus == null || driveCANBus.isEmpty()) {
             throw new IllegalArgumentException("driveCANBus must not be null or empty");

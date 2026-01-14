@@ -14,90 +14,90 @@ package frc.robot;
  */
 public final class Constants {
 
-  public static final class DriveConstants {
-    public static final double AutoModeSpeed = -0.8;  // Move backward to driver station
-    public static final double AutoModeDriveTime = 2.2;  // In seconds
-  }
+    public static final class DriveConstants {
+        public static final double AutoModeSpeed = -0.8; // Move backward to driver station
+        public static final double AutoModeDriveTime = 2.2; // In seconds
+    }
 
-  public static final class LoggingConstants {
-    /** Enable debug console logging. Set to false to disable all debug output. */
-    public static final boolean ENABLE_DEBUG_LOGGING = true;
+    public static final class LoggingConstants {
+        /** Enable debug console logging. Set to false to disable all debug output. */
+        public static final boolean ENABLE_DEBUG_LOGGING = true;
 
-    /** Default log level: DEBUG, INFO, WARN, ERROR, or OFF. */
-    public static final String DEFAULT_LOG_LEVEL = "INFO";
+        /** Default log level: DEBUG, INFO, WARN, ERROR, or OFF. */
+        public static final String DEFAULT_LOG_LEVEL = "INFO";
 
-    /** Enable file-based logging for development sessions. */
-    public static final boolean ENABLE_FILE_LOGGING = true;
+        /** Enable file-based logging for development sessions. */
+        public static final boolean ENABLE_FILE_LOGGING = true;
 
-    /** Directory for log files on real robot (RoboRIO). */
-    public static final String FILE_LOG_DIRECTORY_REAL = "/home/lvuser/logs";
+        /** Directory for log files on real robot (RoboRIO). */
+        public static final String FILE_LOG_DIRECTORY_REAL = "/home/lvuser/logs";
 
-    /** Directory for log files in simulation/development. */
-    public static final String FILE_LOG_DIRECTORY_SIM = "logs";
-  }
+        /** Directory for log files in simulation/development. */
+        public static final String FILE_LOG_DIRECTORY_SIM = "logs";
+    }
 
-  public static final class SimulationConstants {
-    /** Robot mass in kilograms (approximately 125 lbs with battery). */
-    public static final double ROBOT_MASS_KG = 56.7;
+    public static final class SimulationConstants {
+        /** Robot mass in kilograms (approximately 125 lbs with battery). */
+        public static final double ROBOT_MASS_KG = 56.7;
 
-    /** Robot moment of inertia for rotation in kg·m². */
-    public static final double ROBOT_MOI_KG_M2 = 6.0;
+        /** Robot moment of inertia for rotation in kg·m². */
+        public static final double ROBOT_MOI_KG_M2 = 6.0;
 
-    /** Wheel radius in meters (2 inches). */
-    public static final double WHEEL_RADIUS_METERS = 0.0508;
+        /** Wheel radius in meters (2 inches). */
+        public static final double WHEEL_RADIUS_METERS = 0.0508;
 
-    /** Drive motor gear ratio (motor rotations per wheel rotation). */
-    public static final double DRIVE_GEAR_RATIO = 6.394736842105262;
+        /** Drive motor gear ratio (motor rotations per wheel rotation). */
+        public static final double DRIVE_GEAR_RATIO = 6.394736842105262;
 
-    /** Steer motor gear ratio. */
-    public static final double STEER_GEAR_RATIO = 12.1;
+        /** Steer motor gear ratio. */
+        public static final double STEER_GEAR_RATIO = 12.1;
 
-    /** Drive motor moment of inertia in kg·m². */
-    public static final double DRIVE_MOTOR_INERTIA_KG_M2 = 0.01;
+        /** Drive motor moment of inertia in kg·m². */
+        public static final double DRIVE_MOTOR_INERTIA_KG_M2 = 0.01;
 
-    /** Steer motor moment of inertia in kg·m². */
-    public static final double STEER_MOTOR_INERTIA_KG_M2 = 0.01;
+        /** Steer motor moment of inertia in kg·m². */
+        public static final double STEER_MOTOR_INERTIA_KG_M2 = 0.01;
 
-    /** Track width (left-right distance between wheels) in meters. */
-    public static final double TRACK_WIDTH_METERS = 0.5842;
+        /** Track width (left-right distance between wheels) in meters. */
+        public static final double TRACK_WIDTH_METERS = 0.5842;
 
-    /** Wheel base (front-back distance between wheels) in meters. */
-    public static final double WHEEL_BASE_METERS = 0.5842;
+        /** Wheel base (front-back distance between wheels) in meters. */
+        public static final double WHEEL_BASE_METERS = 0.5842;
 
-    /** Maximum speed at 12V in meters per second. */
-    public static final double MAX_SPEED_MPS = 4.99;
+        /** Maximum speed at 12V in meters per second. */
+        public static final double MAX_SPEED_MPS = 4.99;
 
-    /** Simulated loop period in seconds (5ms = 200Hz). */
-    public static final double SIM_LOOP_PERIOD_SECONDS = 0.005;
-  }
+        /** Simulated loop period in seconds (5ms = 200Hz). */
+        public static final double SIM_LOOP_PERIOD_SECONDS = 0.005;
+    }
 
-  public static class OperatorConstants {
-    public static final int DriverControllerPort = 0;
-    public static final int OperatorControllerPort = 1;
+    public static class OperatorConstants {
+        public static final int DriverControllerPort = 0;
+        public static final int OperatorControllerPort = 1;
 
-    public static final boolean UseTwoControllers = true;
+        public static final boolean UseTwoControllers = true;
 
-    public static final double TriggerThreshold = 0.2;
+        public static final double TriggerThreshold = 0.2;
 
-    public static final double xStartPos = 0.02;
-    public static final double xMiddlePos = 0.6;
-    public static final double yStartPos = 0.1;
-    public static final double yMiddlePos = 0.4;
-    public static final double yMaxPos = 0.8;
+        public static final double xStartPos = 0.02;
+        public static final double xMiddlePos = 0.6;
+        public static final double yStartPos = 0.1;
+        public static final double yMiddlePos = 0.4;
+        public static final double yMaxPos = 0.8;
 
-    public static final double xStartRot = 0.02;
-    public static final double xMiddleRot = 0.6;
-    public static final double yStartRot = 0.1;
-    public static final double yMiddleRot = 0.6;
-    public static final double yMaxRot = 1.0;
+        public static final double xStartRot = 0.02;
+        public static final double xMiddleRot = 0.6;
+        public static final double yStartRot = 0.1;
+        public static final double yMiddleRot = 0.6;
+        public static final double yMaxRot = 1.0;
 
-    public static final double LinCoef = 0.15;
-    public static final double Threshold = 0.0;
-    public static final double CuspX = 0.9;
-    public static final double MinLimit = 0.4;
+        public static final double LinCoef = 0.15;
+        public static final double Threshold = 0.0;
+        public static final double CuspX = 0.9;
+        public static final double MinLimit = 0.4;
 
-    public static final double RotLinCoef = 0.2;
-    public static final double RotThreshold = 0.0;
-    public static final double RotCuspX = 0.5;
-  }
+        public static final double RotLinCoef = 0.2;
+        public static final double RotThreshold = 0.0;
+        public static final double RotCuspX = 0.5;
+    }
 }

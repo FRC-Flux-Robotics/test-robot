@@ -52,18 +52,15 @@ class SensitivityTest {
         double resultAboveCusp = sensitivity.transfer(0.7);
 
         // Result should be between linear output at cusp and limit
-        assertTrue(resultAboveCusp > resultAtCusp,
-            "Output above cusp should be greater than at cusp");
-        assertTrue(resultAboveCusp <= 0.8,
-            "Output should not exceed limit");
+        assertTrue(resultAboveCusp > resultAtCusp, "Output above cusp should be greater than at cusp");
+        assertTrue(resultAboveCusp <= 0.8, "Output should not exceed limit");
     }
 
     @Test
     void transfer_exceedsLimit_clampsToLimit() {
         // Output should never exceed the limit
         double result = sensitivity.transfer(1.0);
-        assertTrue(result <= 0.8,
-            "Output should be clamped to limit of 0.8, was: " + result);
+        assertTrue(result <= 0.8, "Output should be clamped to limit of 0.8, was: " + result);
     }
 
     @Test
@@ -149,7 +146,7 @@ class SensitivityTest {
 
         // All inputs should use linear scaling
         assertEquals(0.25, allLinear.transfer(0.5), 0.0001); // 0.5 * 0.5 = 0.25
-        assertEquals(0.4, allLinear.transfer(0.8), 0.0001);  // 0.8 * 0.5 = 0.4
+        assertEquals(0.4, allLinear.transfer(0.8), 0.0001); // 0.8 * 0.5 = 0.4
     }
 
     @Test

@@ -54,21 +54,21 @@ class TestFixturesTest extends DrivetrainTestBase {
         };
 
         // Verify uniqueness within each category
-        assertEquals(4, java.util.Arrays.stream(allDriveIds).distinct().count(),
-            "Drive motor IDs should be unique");
-        assertEquals(4, java.util.Arrays.stream(allSteerIds).distinct().count(),
-            "Steer motor IDs should be unique");
-        assertEquals(4, java.util.Arrays.stream(allEncoderIds).distinct().count(),
-            "Encoder IDs should be unique");
+        assertEquals(4, java.util.Arrays.stream(allDriveIds).distinct().count(), "Drive motor IDs should be unique");
+        assertEquals(4, java.util.Arrays.stream(allSteerIds).distinct().count(), "Steer motor IDs should be unique");
+        assertEquals(4, java.util.Arrays.stream(allEncoderIds).distinct().count(), "Encoder IDs should be unique");
     }
 
     @Test
     void createTestSwerveModuleConfig_setsAllFields() {
         SwerveModuleConfig config = TestFixtures.createTestSwerveModuleConfig(
-            5, 6, 15,     // driveId, steerId, encoderId
-            0.125,        // offset
-            12.0, -12.0   // xPos, yPos
-        );
+                5,
+                6,
+                15, // driveId, steerId, encoderId
+                0.125, // offset
+                12.0,
+                -12.0 // xPos, yPos
+                );
 
         assertEquals(5, config.driveMotorId);
         assertEquals(6, config.steerMotorId);
@@ -86,11 +86,8 @@ class TestFixturesTest extends DrivetrainTestBase {
     @Test
     void createTestSwerveModuleConfig_withInversions_setsInversionFlags() {
         SwerveModuleConfig config = TestFixtures.createTestSwerveModuleConfig(
-            1, 2, 10,
-            0.0,
-            10.0, 10.0,
-            true, true, true  // All inverted
-        );
+                1, 2, 10, 0.0, 10.0, 10.0, true, true, true // All inverted
+                );
 
         assertTrue(config.invertSide);
         assertTrue(config.steerMotorInverted);
@@ -107,9 +104,8 @@ class TestFixturesTest extends DrivetrainTestBase {
 
         // Verify they return different modules (based on position)
         assertNotEquals(
-            getFrontLeftModule().yPos.in(Inches),
-            getFrontRightModule().yPos.in(Inches),
-            "Front left and front right should have different Y positions"
-        );
+                getFrontLeftModule().yPos.in(Inches),
+                getFrontRightModule().yPos.in(Inches),
+                "Front left and front right should have different Y positions");
     }
 }

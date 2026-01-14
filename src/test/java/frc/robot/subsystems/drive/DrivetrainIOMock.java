@@ -2,7 +2,6 @@ package frc.robot.subsystems.drive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,8 +124,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
      * Sets drive motor positions for all modules.
      */
     public DrivetrainIOMock withDrivePositions(double[] positions) {
-        System.arraycopy(positions, 0, this.drivePositionsRad, 0,
-            Math.min(positions.length, MODULE_COUNT));
+        System.arraycopy(positions, 0, this.drivePositionsRad, 0, Math.min(positions.length, MODULE_COUNT));
         return this;
     }
 
@@ -134,8 +132,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
      * Sets drive motor velocities for all modules.
      */
     public DrivetrainIOMock withDriveVelocities(double[] velocities) {
-        System.arraycopy(velocities, 0, this.driveVelocitiesRadPerSec, 0,
-            Math.min(velocities.length, MODULE_COUNT));
+        System.arraycopy(velocities, 0, this.driveVelocitiesRadPerSec, 0, Math.min(velocities.length, MODULE_COUNT));
         return this;
     }
 
@@ -143,8 +140,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
      * Sets drive motor currents for all modules.
      */
     public DrivetrainIOMock withDriveCurrents(double[] currents) {
-        System.arraycopy(currents, 0, this.driveCurrentAmps, 0,
-            Math.min(currents.length, MODULE_COUNT));
+        System.arraycopy(currents, 0, this.driveCurrentAmps, 0, Math.min(currents.length, MODULE_COUNT));
         return this;
     }
 
@@ -152,8 +148,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
      * Sets steer motor positions for all modules.
      */
     public DrivetrainIOMock withSteerPositions(double[] positions) {
-        System.arraycopy(positions, 0, this.steerPositionsRad, 0,
-            Math.min(positions.length, MODULE_COUNT));
+        System.arraycopy(positions, 0, this.steerPositionsRad, 0, Math.min(positions.length, MODULE_COUNT));
         return this;
     }
 
@@ -161,8 +156,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
      * Sets steer motor velocities for all modules.
      */
     public DrivetrainIOMock withSteerVelocities(double[] velocities) {
-        System.arraycopy(velocities, 0, this.steerVelocitiesRadPerSec, 0,
-            Math.min(velocities.length, MODULE_COUNT));
+        System.arraycopy(velocities, 0, this.steerVelocitiesRadPerSec, 0, Math.min(velocities.length, MODULE_COUNT));
         return this;
     }
 
@@ -170,8 +164,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
      * Sets steer motor currents for all modules.
      */
     public DrivetrainIOMock withSteerCurrents(double[] currents) {
-        System.arraycopy(currents, 0, this.steerCurrentAmps, 0,
-            Math.min(currents.length, MODULE_COUNT));
+        System.arraycopy(currents, 0, this.steerCurrentAmps, 0, Math.min(currents.length, MODULE_COUNT));
         return this;
     }
 

@@ -18,9 +18,16 @@ public class SwerveModuleConfig {
     public final Distance xPos;
     public final Distance yPos;
 
-    public SwerveModuleConfig(int driveMotorId, int steerMotorId, int encoderId,
-            double encoderOffsetAngle, double xPos, double yPos,
-            boolean invertSide, boolean steerMotorInverted, boolean encoderInverted) {
+    public SwerveModuleConfig(
+            int driveMotorId,
+            int steerMotorId,
+            int encoderId,
+            double encoderOffsetAngle,
+            double xPos,
+            double yPos,
+            boolean invertSide,
+            boolean steerMotorInverted,
+            boolean encoderInverted) {
         // Validate CAN IDs (CTRE valid range is 0-62)
         if (driveMotorId < 0 || driveMotorId > 62) {
             throw new IllegalArgumentException("driveMotorId must be 0-62, got: " + driveMotorId);
@@ -49,4 +56,3 @@ public class SwerveModuleConfig {
         this.yPos = Inches.of(yPos);
     }
 }
-

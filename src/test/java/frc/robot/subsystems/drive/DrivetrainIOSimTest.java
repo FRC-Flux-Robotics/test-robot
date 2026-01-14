@@ -69,10 +69,8 @@ class DrivetrainIOSimTest {
 
         // All modules should have positive drive velocity
         for (int i = 0; i < 4; i++) {
-            assertTrue(inputs.driveVelocitiesRadPerSec[i] > 0,
-                    "Module " + i + " should have positive drive velocity");
-            assertTrue(inputs.driveAppliedVolts[i] > 0,
-                    "Module " + i + " should have positive applied voltage");
+            assertTrue(inputs.driveVelocitiesRadPerSec[i] > 0, "Module " + i + " should have positive drive velocity");
+            assertTrue(inputs.driveAppliedVolts[i] > 0, "Module " + i + " should have positive applied voltage");
         }
 
         // Odometry should show forward movement
@@ -89,8 +87,7 @@ class DrivetrainIOSimTest {
 
         // All modules should have positive drive velocity
         for (int i = 0; i < 4; i++) {
-            assertTrue(inputs.driveVelocitiesRadPerSec[i] > 0,
-                    "Module " + i + " should have positive drive velocity");
+            assertTrue(inputs.driveVelocitiesRadPerSec[i] > 0, "Module " + i + " should have positive drive velocity");
         }
     }
 
@@ -110,7 +107,8 @@ class DrivetrainIOSimTest {
 
         // All module velocities should be near zero after deceleration
         for (int i = 0; i < 4; i++) {
-            assertTrue(Math.abs(inputs.driveVelocitiesRadPerSec[i]) < 1.0,
+            assertTrue(
+                    Math.abs(inputs.driveVelocitiesRadPerSec[i]) < 1.0,
                     "Module " + i + " velocity should be near zero after stop");
         }
 
@@ -183,8 +181,7 @@ class DrivetrainIOSimTest {
         assertTrue(motorsSpinning, "Motors should be spinning after driving");
 
         // Verify some odometry update occurred (positive X movement when driving forward)
-        assertTrue(inputs.odometryX > 0.0,
-                "Robot should have moved forward (odometryX=" + inputs.odometryX + ")");
+        assertTrue(inputs.odometryX > 0.0, "Robot should have moved forward (odometryX=" + inputs.odometryX + ")");
     }
 
     @Test

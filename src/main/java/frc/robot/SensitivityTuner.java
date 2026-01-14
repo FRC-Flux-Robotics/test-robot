@@ -32,8 +32,7 @@ public class SensitivityTuner {
      * @param yMiddle output value at xMiddle
      * @param yMax maximum output value when input reaches 1.0
      */
-    public SensitivityTuner(String prefix, double xStart, double xMiddle,
-                            double yStart, double yMiddle, double yMax) {
+    public SensitivityTuner(String prefix, double xStart, double xMiddle, double yStart, double yMiddle, double yMax) {
         this.prefix = prefix;
         this.xStart = xStart;
         this.xMiddle = xMiddle;
@@ -68,8 +67,11 @@ public class SensitivityTuner {
         double newYMiddle = SmartDashboard.getNumber(prefix + "Middle_Y", yMiddle);
         double newYMax = SmartDashboard.getNumber(prefix + "Max_Y", yMax);
 
-        boolean changed = xStart != newXStart || xMiddle != newXMiddle
-                       || yStart != newYStart || yMiddle != newYMiddle || yMax != newYMax;
+        boolean changed = xStart != newXStart
+                || xMiddle != newXMiddle
+                || yStart != newYStart
+                || yMiddle != newYMiddle
+                || yMax != newYMax;
 
         if (changed) {
             xStart = newXStart;

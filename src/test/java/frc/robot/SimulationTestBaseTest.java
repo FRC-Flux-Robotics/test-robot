@@ -140,8 +140,7 @@ class SimulationTestBaseTest {
             updateInputs();
 
             // Robot should have moved forward
-            assertTrue(inputs.odometryX > 0,
-                "Robot should have positive X after driving forward");
+            assertTrue(inputs.odometryX > 0, "Robot should have positive X after driving forward");
         }
 
         @Test
@@ -174,16 +173,14 @@ class SimulationTestBaseTest {
         void assertPositionNearPassesWhenClose() {
             simIO.resetOdometry(new Pose2d(1.0, 2.0, Rotation2d.kZero));
 
-            assertDoesNotThrow(() ->
-                assertPositionNear(new Pose2d(1.0, 2.0, Rotation2d.kZero), 0.1));
+            assertDoesNotThrow(() -> assertPositionNear(new Pose2d(1.0, 2.0, Rotation2d.kZero), 0.1));
         }
 
         @Test
         void assertPositionNearFailsWhenFar() {
             simIO.resetOdometry(new Pose2d(1.0, 2.0, Rotation2d.kZero));
 
-            assertThrows(AssertionError.class, () ->
-                assertPositionNear(new Pose2d(5.0, 5.0, Rotation2d.kZero), 0.1));
+            assertThrows(AssertionError.class, () -> assertPositionNear(new Pose2d(5.0, 5.0, Rotation2d.kZero), 0.1));
         }
 
         @Test
@@ -253,8 +250,7 @@ class SimulationTestBaseTest {
 
             // Should be near 90 degrees
             double actualDegrees = Math.toDegrees(inputs.odometryRotationRad);
-            assertEquals(90.0, actualDegrees, 5.0,
-                "Robot should rotate ~90 degrees after 1 second at 90 deg/s");
+            assertEquals(90.0, actualDegrees, 5.0, "Robot should rotate ~90 degrees after 1 second at 90 deg/s");
         }
     }
 

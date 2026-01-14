@@ -37,12 +37,14 @@ public final class TestFixtures {
      */
     public static RobotConfig createTestRobotConfig() {
         return new RobotConfig(
-            "TestBus", "rio", 1,
-            createTestSwerveModuleConfig(1, 2, 10, 0.0, 10.0, 10.0),    // Front Left
-            createTestSwerveModuleConfig(3, 4, 11, 0.0, 10.0, -10.0),   // Front Right
-            createTestSwerveModuleConfig(5, 6, 12, 0.0, -10.0, 10.0),   // Back Left
-            createTestSwerveModuleConfig(7, 8, 13, 0.0, -10.0, -10.0)   // Back Right
-        );
+                "TestBus",
+                "rio",
+                1,
+                createTestSwerveModuleConfig(1, 2, 10, 0.0, 10.0, 10.0), // Front Left
+                createTestSwerveModuleConfig(3, 4, 11, 0.0, 10.0, -10.0), // Front Right
+                createTestSwerveModuleConfig(5, 6, 12, 0.0, -10.0, 10.0), // Back Left
+                createTestSwerveModuleConfig(7, 8, 13, 0.0, -10.0, -10.0) // Back Right
+                );
     }
 
     /**
@@ -57,13 +59,8 @@ public final class TestFixtures {
      * @return A configured SwerveModuleConfig
      */
     public static SwerveModuleConfig createTestSwerveModuleConfig(
-            int driveId, int steerId, int encoderId,
-            double offset, double xPos, double yPos) {
-        return new SwerveModuleConfig(
-            driveId, steerId, encoderId,
-            offset, xPos, yPos,
-            false, false, false
-        );
+            int driveId, int steerId, int encoderId, double offset, double xPos, double yPos) {
+        return new SwerveModuleConfig(driveId, steerId, encoderId, offset, xPos, yPos, false, false, false);
     }
 
     /**
@@ -81,14 +78,17 @@ public final class TestFixtures {
      * @return A configured SwerveModuleConfig
      */
     public static SwerveModuleConfig createTestSwerveModuleConfig(
-            int driveId, int steerId, int encoderId,
-            double offset, double xPos, double yPos,
-            boolean invertSide, boolean steerMotorInverted, boolean encoderInverted) {
+            int driveId,
+            int steerId,
+            int encoderId,
+            double offset,
+            double xPos,
+            double yPos,
+            boolean invertSide,
+            boolean steerMotorInverted,
+            boolean encoderInverted) {
         return new SwerveModuleConfig(
-            driveId, steerId, encoderId,
-            offset, xPos, yPos,
-            invertSide, steerMotorInverted, encoderInverted
-        );
+                driveId, steerId, encoderId, offset, xPos, yPos, invertSide, steerMotorInverted, encoderInverted);
     }
 
     // ========== Mock Subsystem Factory Methods ==========

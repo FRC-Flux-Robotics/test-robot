@@ -3,13 +3,11 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import edu.wpi.first.math.geometry.Rotation2d;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for drivetrain command creation patterns.
@@ -29,9 +27,9 @@ class DrivetrainCommandCreationTest {
     void swerveRequest_fieldCentric_createsValidRequest() {
         // Create a field-centric drive request as used in RobotContainer
         SwerveRequest.FieldCentric request = new SwerveRequest.FieldCentric()
-            .withDeadband(MAX_SPEED * 0.1)
-            .withRotationalDeadband(MAX_ANGULAR_RATE * 0.1)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+                .withDeadband(MAX_SPEED * 0.1)
+                .withRotationalDeadband(MAX_ANGULAR_RATE * 0.1)
+                .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
         assertNotNull(request, "FieldCentric request should not be null");
     }
@@ -39,15 +37,12 @@ class DrivetrainCommandCreationTest {
     @Test
     void swerveRequest_fieldCentric_acceptsVelocityInputs() {
         SwerveRequest.FieldCentric request = new SwerveRequest.FieldCentric()
-            .withDeadband(MAX_SPEED * 0.1)
-            .withRotationalDeadband(MAX_ANGULAR_RATE * 0.1)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+                .withDeadband(MAX_SPEED * 0.1)
+                .withRotationalDeadband(MAX_ANGULAR_RATE * 0.1)
+                .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
         // Should be able to set velocity values without throwing
-        SwerveRequest result = request
-            .withVelocityX(1.0)
-            .withVelocityY(0.5)
-            .withRotationalRate(0.25);
+        SwerveRequest result = request.withVelocityX(1.0).withVelocityY(0.5).withRotationalRate(0.25);
 
         assertNotNull(result, "FieldCentric with velocities should not be null");
     }
@@ -89,9 +84,8 @@ class DrivetrainCommandCreationTest {
     @Test
     void swerveRequest_fieldCentric_withZeroDeadband() {
         // Edge case: zero deadband should still work
-        SwerveRequest.FieldCentric request = new SwerveRequest.FieldCentric()
-            .withDeadband(0.0)
-            .withRotationalDeadband(0.0);
+        SwerveRequest.FieldCentric request =
+                new SwerveRequest.FieldCentric().withDeadband(0.0).withRotationalDeadband(0.0);
 
         assertNotNull(request, "FieldCentric with zero deadband should not be null");
     }
@@ -100,12 +94,12 @@ class DrivetrainCommandCreationTest {
     void swerveRequest_fieldCentric_withMaxValues() {
         // Edge case: maximum velocity values
         SwerveRequest.FieldCentric request = new SwerveRequest.FieldCentric()
-            .withDeadband(MAX_SPEED * 0.1)
-            .withRotationalDeadband(MAX_ANGULAR_RATE * 0.1)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-            .withVelocityX(MAX_SPEED)
-            .withVelocityY(MAX_SPEED)
-            .withRotationalRate(MAX_ANGULAR_RATE);
+                .withDeadband(MAX_SPEED * 0.1)
+                .withRotationalDeadband(MAX_ANGULAR_RATE * 0.1)
+                .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+                .withVelocityX(MAX_SPEED)
+                .withVelocityY(MAX_SPEED)
+                .withRotationalRate(MAX_ANGULAR_RATE);
 
         assertNotNull(request, "FieldCentric with max values should not be null");
     }

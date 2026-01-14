@@ -3,6 +3,7 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2026.1.1"
     id "jacoco"
     id "checkstyle"
+    id "com.diffplug.spotless" version "7.0.2"
 }
 
 java {
@@ -142,6 +143,20 @@ checkstyleMain {
 checkstyleTest {
     source = sourceSets.test.allJava
 }
+
+// Spotless code formatting configuration
+spotless {
+    java {
+        target 'src/*/java/**/*.java'
+        targetExclude 'src/main/java/frc/robot/generated/**'
+        palantirJavaFormat('2.50.0')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+check.dependsOn spotlessCheck
 
 // Simulation configuration (e.g. environment variables).
 wpi.sim.addGui().defaultEnabled = true
