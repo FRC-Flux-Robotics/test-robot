@@ -136,8 +136,8 @@ public class RobotContainer {
   }
 
 
-  private static SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration> createModuleConstants(SwerveModuleConfig constants)
-  {
+  private static SwerveModuleConstants<TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
+      createModuleConstants(SwerveModuleConfig constants) {
     return TunerConstants.ConstantCreator.createModuleConstants(
       constants.steerMotorId, constants.driveMotorId, constants.encoderId,
       constants.encoderOffset,

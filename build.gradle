@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2026.1.1"
     id "jacoco"
+    id "checkstyle"
 }
 
 java {
@@ -125,6 +126,22 @@ jacocoTestCoverageVerification {
 }
 
 check.dependsOn jacocoTestCoverageVerification
+
+// Checkstyle code quality configuration
+checkstyle {
+    toolVersion = "10.21.0"
+    configFile = file("config/checkstyle/checkstyle.xml")
+    maxWarnings = 0
+    maxErrors = 0
+}
+
+checkstyleMain {
+    source = sourceSets.main.allJava
+}
+
+checkstyleTest {
+    source = sourceSets.test.allJava
+}
 
 // Simulation configuration (e.g. environment variables).
 wpi.sim.addGui().defaultEnabled = true

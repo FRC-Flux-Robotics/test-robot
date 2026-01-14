@@ -89,20 +89,21 @@ public class Sensitivity {
         double xabs = Math.abs(x);
         if (threshold < 0) {
             xabs -= threshold;
-            if (xabs <= 0)
-              return 0;
+            if (xabs <= 0) {
+                return 0;
+            }
+        } else if (xabs < threshold) {
+            return 0;
         }
-        else if (xabs < threshold)
-          return 0;
 
         if (xabs <= cuspX) {
             xabs *= linCoef;
-        }
-        else {
+        } else {
             xabs = a * xabs * xabs + b * xabs + c;
         }
-        if (xabs > limit)
+        if (xabs > limit) {
             xabs = limit;
+        }
         return x >= 0 ? xabs : -xabs;
     }
 

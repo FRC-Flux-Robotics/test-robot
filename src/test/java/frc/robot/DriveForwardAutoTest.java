@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.autos.DriveForwardAuto;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
