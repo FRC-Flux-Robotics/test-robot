@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.TestFixtures;
 import frc.robot.subsystems.drive.DrivetrainIO;
 import frc.robot.subsystems.drive.DrivetrainIOMock;
@@ -184,10 +183,7 @@ class TestableCommandSwerveDrivetrainTest {
 
     @Test
     void getInputs_returnsCurrentInputs() {
-        mockIO.withGyroYaw(45.0)
-                .withGyroPitch(5.0)
-                .withGyroRoll(-3.0)
-                .withOdometry(1.0, 2.0, 0.5);
+        mockIO.withGyroYaw(45.0).withGyroPitch(5.0).withGyroRoll(-3.0).withOdometry(1.0, 2.0, 0.5);
 
         drivetrain.periodic();
         DrivetrainIO.DrivetrainIOInputs inputs = drivetrain.getInputs();

@@ -29,8 +29,8 @@ class RobotConfigTest {
     }
 
     @Test
-    void testRobot_hasValidConfiguration() {
-        RobotConfig test = RobotConfig.TestRobot;
+    void coralRobot_hasValidConfiguration() {
+        RobotConfig test = RobotConfig.CoralRobot;
 
         assertNotNull(test);
         assertEquals("Drivetrain", test.driveCANBus);

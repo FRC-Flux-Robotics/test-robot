@@ -48,7 +48,10 @@ class CommandSwerveDrivetrainTest {
 
         assertEquals(expectedPose.getX(), actualPose.getX(), 0.001);
         assertEquals(expectedPose.getY(), actualPose.getY(), 0.001);
-        assertEquals(expectedPose.getRotation().getDegrees(), actualPose.getRotation().getDegrees(), 0.001);
+        assertEquals(
+                expectedPose.getRotation().getDegrees(),
+                actualPose.getRotation().getDegrees(),
+                0.001);
     }
 
     @Test

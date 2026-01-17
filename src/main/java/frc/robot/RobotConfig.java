@@ -15,7 +15,7 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
  *
  * <p>Pre-configured instances are provided for team robots:
  * <ul>
- *   <li>{@link #TestRobot} - Competition robot configuration</li>
+ *   <li>{@link #CoralRobot} - Competition robot with elevator</li>
  *   <li>{@link #PracticeRobot} - Practice robot configuration</li>
  * </ul>
  *
@@ -57,10 +57,10 @@ public final class RobotConfig {
     public static final boolean InvertRightSide = true;
 
     /**
-     * Competition robot configuration.
+     * Coral robot configuration (competition robot with elevator).
      * Uses "Drivetrain" CANivore bus with Pigeon ID 20.
      */
-    public static final RobotConfig TestRobot = new RobotConfig(
+    public static final RobotConfig CoralRobot = new RobotConfig(
             "Drivetrain",
             "rio",
             20,

@@ -61,9 +61,7 @@ public class TestableCommandSwerveDrivetrain {
         if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
-                        allianceColor == Alliance.Red
-                                ? RED_ALLIANCE_PERSPECTIVE
-                                : BLUE_ALLIANCE_PERSPECTIVE);
+                        allianceColor == Alliance.Red ? RED_ALLIANCE_PERSPECTIVE : BLUE_ALLIANCE_PERSPECTIVE);
                 hasAppliedOperatorPerspective = true;
             });
         }
@@ -77,10 +75,7 @@ public class TestableCommandSwerveDrivetrain {
         // handles this logging.
 
         // Update pose from odometry inputs
-        currentPose = new Pose2d(
-                inputs.odometryX,
-                inputs.odometryY,
-                new Rotation2d(inputs.odometryRotationRad));
+        currentPose = new Pose2d(inputs.odometryX, inputs.odometryY, new Rotation2d(inputs.odometryRotationRad));
 
         // Update gyro rotation
         gyroRotation = Rotation2d.fromDegrees(inputs.gyroYawDegrees);
