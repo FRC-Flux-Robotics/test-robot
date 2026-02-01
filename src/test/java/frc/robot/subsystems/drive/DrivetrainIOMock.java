@@ -34,6 +34,10 @@ public class DrivetrainIOMock implements DrivetrainIO {
     private double odometryY = 0.0;
     private double odometryRotationRad = 0.0;
 
+    // Safety simulation fields
+    private double batteryVoltage = 12.0;
+    private double speedMultiplier = 1.0;
+
     // Call tracking
     private final List<DriveCall> driveCalls = new ArrayList<>();
     private int stopCallCount = 0;
@@ -166,6 +170,35 @@ public class DrivetrainIOMock implements DrivetrainIO {
     public DrivetrainIOMock withSteerCurrents(double[] currents) {
         System.arraycopy(currents, 0, this.steerCurrentAmps, 0, Math.min(currents.length, MODULE_COUNT));
         return this;
+    }
+
+    /**
+     * Sets the simulated battery voltage for brownout protection testing.
+     */
+    public DrivetrainIOMock withBatteryVoltage(double voltage) {
+        this.batteryVoltage = voltage;
+        return this;
+    }
+
+    /**
+     * Gets the currently configured battery voltage.
+     */
+    public double getBatteryVoltage() {
+        return batteryVoltage;
+    }
+
+    /**
+     * Sets the speed multiplier (for tracking what was set by the system).
+     */
+    public void setSpeedMultiplier(double multiplier) {
+        this.speedMultiplier = multiplier;
+    }
+
+    /**
+     * Gets the speed multiplier that was set.
+     */
+    public double getSpeedMultiplier() {
+        return speedMultiplier;
     }
 
     // ========== DrivetrainIO Implementation ==========
@@ -335,5 +368,7 @@ public class DrivetrainIOMock implements DrivetrainIO {
         odometryX = 0.0;
         odometryY = 0.0;
         odometryRotationRad = 0.0;
+        batteryVoltage = 12.0;
+        speedMultiplier = 1.0;
     }
 }

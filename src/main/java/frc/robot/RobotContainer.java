@@ -101,10 +101,14 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
+                // Speed is multiplied by getSpeedMultiplier() for brownout protection
                 drivetrain.applyRequest(() -> drive.withVelocityX(
-                                -MaxSpeed * sensitivityPos.transfer(driverController.getLeftY()))
-                        .withVelocityY(-MaxSpeed * sensitivityPos.transfer(driverController.getLeftX()))
-                        .withRotationalRate(MaxAngularRate * sensitivityRot.transfer(-driverController.getRightX()))));
+                                -MaxSpeed * sensitivityPos.transfer(driverController.getLeftY())
+                                        * drivetrain.getSpeedMultiplier())
+                        .withVelocityY(-MaxSpeed * sensitivityPos.transfer(driverController.getLeftX())
+                                * drivetrain.getSpeedMultiplier())
+                        .withRotationalRate(MaxAngularRate * sensitivityRot.transfer(-driverController.getRightX())
+                                * drivetrain.getSpeedMultiplier())));
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
@@ -127,6 +131,16 @@ public class RobotContainer {
 
         // Reset the field-centric heading on right bumper press
         driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        // Emergency Stop: Both bumpers pressed simultaneously triggers emergency stop
+        Trigger emergencyStopTrigger = driverController.leftBumper().and(driverController.rightBumper());
+        emergencyStopTrigger.onTrue(drivetrain.runOnce(() -> drivetrain.triggerEmergencyStop()));
+
+        // Emergency Stop Reset: Press A button when disabled to reset
+        // Only allow reset when robot is disabled for safety
+        RobotModeTriggers.disabled()
+                .and(driverController.a())
+                .onTrue(drivetrain.runOnce(() -> drivetrain.resetEmergencyStop()).ignoringDisable(true));
     }
 
     /**

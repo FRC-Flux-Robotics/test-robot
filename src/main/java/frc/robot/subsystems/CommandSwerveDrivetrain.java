@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants;
 import frc.robot.RobotConfig;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.subsystems.drive.DrivetrainIO;
@@ -53,6 +54,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     protected SwerveDriveOdometry odometry;
     protected Pose2d initPose = new Pose2d();
     protected Pose2d currentPose;
+
+    // Safety: Emergency Stop
+    /** Emergency stop flag - volatile for thread safety across periodic loops. */
+    private volatile boolean emergencyStopActive = false;
+
+    /** Request to apply when emergency stop is active. */
+    private final SwerveRequest.Idle emergencyStopRequest = new SwerveRequest.Idle();
+
+    // Safety: Brownout Protection
+    /** Current speed multiplier for brownout protection. */
+    private double speedMultiplier = 1.0;
+
+    /** Whether brownout protection is currently active. */
+    private boolean brownoutProtectionActive = false;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
@@ -271,6 +286,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     @Override
     public void periodic() {
+        // Safety: If emergency stop is active, ensure motors remain stopped
+        if (emergencyStopActive) {
+            io.stop();
+            super.setControl(emergencyStopRequest);
+            // Still log telemetry but skip normal operations
+            io.updateInputs(inputs);
+            Logger.processInputs("Drive", inputs);
+            return;
+        }
+
         /*
          * Periodically try to apply the operator perspective.
          * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
@@ -287,6 +312,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 m_hasAppliedOperatorPerspective = true;
             });
         }
+
+        // Safety: Update brownout protection
+        updateBrownoutProtection();
 
         // AdvantageKit: Update and log drivetrain inputs
         io.updateInputs(inputs);
@@ -378,5 +406,101 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public void resetOdometry(Pose2d pose) {
         odometry.resetPosition(gyro.getRotation2d(), getState().ModulePositions, pose);
+    }
+
+    // ==================== Safety Methods ====================
+
+    /**
+     * Triggers the emergency stop. All motors will be immediately zeroed
+     * and remain stopped until {@link #resetEmergencyStop()} is called.
+     *
+     * <p>This is triggered by pressing both controller bumpers simultaneously.
+     */
+    public void triggerEmergencyStop() {
+        emergencyStopActive = true;
+        io.stop();
+        SmartDashboard.putBoolean(Constants.SafetyConstants.EMERGENCY_STOP_KEY, true);
+        DriverStation.reportWarning("EMERGENCY STOP ACTIVATED", false);
+    }
+
+    /**
+     * Resets the emergency stop, allowing normal robot operation to resume.
+     * Should only be called after the cause of the emergency stop is resolved.
+     */
+    public void resetEmergencyStop() {
+        emergencyStopActive = false;
+        SmartDashboard.putBoolean(Constants.SafetyConstants.EMERGENCY_STOP_KEY, false);
+        DriverStation.reportWarning("Emergency stop reset - robot operational", false);
+    }
+
+    /**
+     * Checks if the emergency stop is currently active.
+     *
+     * @return true if emergency stop is active, false otherwise
+     */
+    public boolean isEmergencyStopActive() {
+        return emergencyStopActive;
+    }
+
+    /**
+     * Updates brownout protection state based on battery voltage.
+     * Called from periodic().
+     */
+    private void updateBrownoutProtection() {
+        double voltage = RobotController.getBatteryVoltage();
+        SmartDashboard.putNumber(Constants.SafetyConstants.BATTERY_VOLTAGE_KEY, voltage);
+
+        if (!brownoutProtectionActive) {
+            // Check if we need to activate brownout protection
+            if (voltage < Constants.SafetyConstants.BROWNOUT_VOLTAGE_THRESHOLD) {
+                brownoutProtectionActive = true;
+                speedMultiplier = Constants.SafetyConstants.BROWNOUT_SPEED_MULTIPLIER;
+                SmartDashboard.putBoolean(Constants.SafetyConstants.BROWNOUT_WARNING_KEY, true);
+                DriverStation.reportWarning(
+                        "Low battery voltage (" + String.format("%.1f", voltage) + "V) - speed reduced to 50%",
+                        false);
+            }
+        } else {
+            // Check if we can deactivate brownout protection (with hysteresis)
+            if (voltage > Constants.SafetyConstants.BROWNOUT_RECOVERY_VOLTAGE) {
+                brownoutProtectionActive = false;
+                speedMultiplier = 1.0;
+                SmartDashboard.putBoolean(Constants.SafetyConstants.BROWNOUT_WARNING_KEY, false);
+            }
+        }
+    }
+
+    /**
+     * Gets the current speed multiplier based on brownout protection state.
+     *
+     * @return Speed multiplier between 0.0 and 1.0
+     */
+    public double getSpeedMultiplier() {
+        return speedMultiplier;
+    }
+
+    /**
+     * Checks if brownout protection is currently active.
+     *
+     * @return true if brownout protection is limiting speed
+     */
+    public boolean isBrownoutProtectionActive() {
+        return brownoutProtectionActive;
+    }
+
+    /**
+     * Overrides setControl to respect emergency stop.
+     * When emergency stop is active, all control requests are blocked.
+     *
+     * @param request The swerve request to apply
+     */
+    @Override
+    public void setControl(SwerveRequest request) {
+        // Safety: Block all control requests during emergency stop
+        if (emergencyStopActive) {
+            super.setControl(emergencyStopRequest);
+            return;
+        }
+        super.setControl(request);
     }
 }

@@ -100,4 +100,49 @@ public final class Constants {
         public static final double RotThreshold = 0.0;
         public static final double RotCuspX = 0.5;
     }
+
+    /**
+     * Safety-related constants for emergency stop, current limits, and brownout protection.
+     */
+    public static final class SafetyConstants {
+        // Current Limits - Drive Motors
+        /** Drive motor stator current limit (continuous) in Amps. */
+        public static final double DRIVE_STATOR_CURRENT_LIMIT_AMPS = 40.0;
+
+        /** Drive motor stator current limit (peak) in Amps. */
+        public static final double DRIVE_STATOR_CURRENT_LIMIT_PEAK_AMPS = 60.0;
+
+        /** Peak current duration in seconds. */
+        public static final double DRIVE_PEAK_CURRENT_DURATION_SECONDS = 0.1;
+
+        /** Drive motor supply current limit in Amps. */
+        public static final double DRIVE_SUPPLY_CURRENT_LIMIT_AMPS = 35.0;
+
+        // Current Limits - Steer Motors
+        /** Steer motor stator current limit (continuous) in Amps. */
+        public static final double STEER_STATOR_CURRENT_LIMIT_AMPS = 20.0;
+
+        /** Steer motor stator current limit (peak) in Amps. */
+        public static final double STEER_STATOR_CURRENT_LIMIT_PEAK_AMPS = 30.0;
+
+        // Brownout Protection
+        /** Voltage threshold below which speed is reduced. */
+        public static final double BROWNOUT_VOLTAGE_THRESHOLD = 10.5;
+
+        /** Speed multiplier when in brownout protection mode (0.0 to 1.0). */
+        public static final double BROWNOUT_SPEED_MULTIPLIER = 0.5;
+
+        /** Voltage threshold to exit brownout protection (hysteresis). */
+        public static final double BROWNOUT_RECOVERY_VOLTAGE = 11.0;
+
+        // SmartDashboard keys for telemetry
+        /** SmartDashboard key for brownout warning. */
+        public static final String BROWNOUT_WARNING_KEY = "Safety/BrownoutActive";
+
+        /** SmartDashboard key for emergency stop state. */
+        public static final String EMERGENCY_STOP_KEY = "Safety/EmergencyStopActive";
+
+        /** SmartDashboard key for battery voltage. */
+        public static final String BATTERY_VOLTAGE_KEY = "Safety/BatteryVoltage";
+    }
 }
