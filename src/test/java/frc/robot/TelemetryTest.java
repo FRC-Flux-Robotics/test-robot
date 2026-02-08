@@ -25,25 +25,19 @@ class TelemetryTest {
     @Test
     void constructor_withPositiveMaxSpeed_succeeds() {
         // Standard use case with typical FRC max speed
-        assertDoesNotThrow(
-                () -> new Telemetry(4.5),
-                "Telemetry should construct with positive max speed");
+        assertDoesNotThrow(() -> new Telemetry(4.5), "Telemetry should construct with positive max speed");
     }
 
     @Test
     void constructor_withZeroMaxSpeed_succeeds() {
         // Edge case - zero max speed should not throw
-        assertDoesNotThrow(
-                () -> new Telemetry(0.0),
-                "Telemetry should construct with zero max speed");
+        assertDoesNotThrow(() -> new Telemetry(0.0), "Telemetry should construct with zero max speed");
     }
 
     @Test
     void constructor_withNegativeMaxSpeed_succeeds() {
         // Edge case - negative speed (unusual but should not crash)
-        assertDoesNotThrow(
-                () -> new Telemetry(-1.0),
-                "Telemetry should construct with negative max speed");
+        assertDoesNotThrow(() -> new Telemetry(-1.0), "Telemetry should construct with negative max speed");
     }
 
     @Test
@@ -51,9 +45,7 @@ class TelemetryTest {
         Telemetry telemetry = new Telemetry(4.5);
         SwerveDriveState state = createValidDriveState();
 
-        assertDoesNotThrow(
-                () -> telemetry.telemeterize(state),
-                "telemeterize should not throw with valid state");
+        assertDoesNotThrow(() -> telemetry.telemeterize(state), "telemeterize should not throw with valid state");
     }
 
     @Test
@@ -61,9 +53,7 @@ class TelemetryTest {
         Telemetry telemetry = new Telemetry(4.5);
         SwerveDriveState state = createZeroVelocityState();
 
-        assertDoesNotThrow(
-                () -> telemetry.telemeterize(state),
-                "telemeterize should handle zero velocities");
+        assertDoesNotThrow(() -> telemetry.telemeterize(state), "telemeterize should handle zero velocities");
     }
 
     @Test

@@ -2,7 +2,6 @@ package frc.robot;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import frc.robot.subsystems.drive.DrivetrainIOMock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -182,10 +181,8 @@ class SafetyTest extends SimulationTestBase {
             double threshold = Constants.SafetyConstants.BROWNOUT_VOLTAGE_THRESHOLD;
             double recovery = Constants.SafetyConstants.BROWNOUT_RECOVERY_VOLTAGE;
 
-            assertTrue(recovery > threshold,
-                    "Recovery voltage should be higher than threshold for hysteresis");
-            assertEquals(0.5, recovery - threshold, 0.01,
-                    "Hysteresis gap should be 0.5V");
+            assertTrue(recovery > threshold, "Recovery voltage should be higher than threshold for hysteresis");
+            assertEquals(0.5, recovery - threshold, 0.01, "Hysteresis gap should be 0.5V");
         }
 
         @Test
@@ -279,11 +276,14 @@ class SafetyTest extends SimulationTestBase {
         @Test
         @DisplayName("Safety SmartDashboard keys use Safety/ namespace")
         void safetyConstants_keysUseSafetyNamespace() {
-            assertTrue(Constants.SafetyConstants.EMERGENCY_STOP_KEY.startsWith("Safety/"),
+            assertTrue(
+                    Constants.SafetyConstants.EMERGENCY_STOP_KEY.startsWith("Safety/"),
                     "Emergency stop key should be in Safety/ namespace");
-            assertTrue(Constants.SafetyConstants.BROWNOUT_WARNING_KEY.startsWith("Safety/"),
+            assertTrue(
+                    Constants.SafetyConstants.BROWNOUT_WARNING_KEY.startsWith("Safety/"),
                     "Brownout warning key should be in Safety/ namespace");
-            assertTrue(Constants.SafetyConstants.BATTERY_VOLTAGE_KEY.startsWith("Safety/"),
+            assertTrue(
+                    Constants.SafetyConstants.BATTERY_VOLTAGE_KEY.startsWith("Safety/"),
                     "Battery voltage key should be in Safety/ namespace");
         }
 

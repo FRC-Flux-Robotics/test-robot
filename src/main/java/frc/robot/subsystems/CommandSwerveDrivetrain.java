@@ -457,8 +457,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 speedMultiplier = Constants.SafetyConstants.BROWNOUT_SPEED_MULTIPLIER;
                 SmartDashboard.putBoolean(Constants.SafetyConstants.BROWNOUT_WARNING_KEY, true);
                 DriverStation.reportWarning(
-                        "Low battery voltage (" + String.format("%.1f", voltage) + "V) - speed reduced to 50%",
-                        false);
+                        "Low battery voltage (" + String.format("%.1f", voltage) + "V) - speed reduced to 50%", false);
             }
         } else {
             // Check if we can deactivate brownout protection (with hysteresis)

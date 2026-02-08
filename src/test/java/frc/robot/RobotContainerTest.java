@@ -141,14 +141,8 @@ class RobotContainerTest {
     void coralRobot_leftModulesUseLeftInversion() {
         RobotConfig config = RobotConfig.CoralRobot;
 
-        assertEquals(
-                RobotConfig.InvertLeftSide,
-                config.frontLeft.invertSide,
-                "Front left should use left inversion");
-        assertEquals(
-                RobotConfig.InvertLeftSide,
-                config.backLeft.invertSide,
-                "Back left should use left inversion");
+        assertEquals(RobotConfig.InvertLeftSide, config.frontLeft.invertSide, "Front left should use left inversion");
+        assertEquals(RobotConfig.InvertLeftSide, config.backLeft.invertSide, "Back left should use left inversion");
     }
 
     @Test
@@ -156,12 +150,7 @@ class RobotContainerTest {
         RobotConfig config = RobotConfig.CoralRobot;
 
         assertEquals(
-                RobotConfig.InvertRightSide,
-                config.frontRight.invertSide,
-                "Front right should use right inversion");
-        assertEquals(
-                RobotConfig.InvertRightSide,
-                config.backRight.invertSide,
-                "Back right should use right inversion");
+                RobotConfig.InvertRightSide, config.frontRight.invertSide, "Front right should use right inversion");
+        assertEquals(RobotConfig.InvertRightSide, config.backRight.invertSide, "Back right should use right inversion");
     }
 }

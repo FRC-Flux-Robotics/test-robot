@@ -102,12 +102,14 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 // Speed is multiplied by getSpeedMultiplier() for brownout protection
-                drivetrain.applyRequest(() -> drive.withVelocityX(
-                                -MaxSpeed * sensitivityPos.transfer(driverController.getLeftY())
-                                        * drivetrain.getSpeedMultiplier())
-                        .withVelocityY(-MaxSpeed * sensitivityPos.transfer(driverController.getLeftX())
+                drivetrain.applyRequest(() -> drive.withVelocityX(-MaxSpeed
+                                * sensitivityPos.transfer(driverController.getLeftY())
                                 * drivetrain.getSpeedMultiplier())
-                        .withRotationalRate(MaxAngularRate * sensitivityRot.transfer(-driverController.getRightX())
+                        .withVelocityY(-MaxSpeed
+                                * sensitivityPos.transfer(driverController.getLeftX())
+                                * drivetrain.getSpeedMultiplier())
+                        .withRotationalRate(MaxAngularRate
+                                * sensitivityRot.transfer(-driverController.getRightX())
                                 * drivetrain.getSpeedMultiplier())));
 
         // Idle while the robot is disabled. This ensures the configured
@@ -140,7 +142,9 @@ public class RobotContainer {
         // Only allow reset when robot is disabled for safety
         RobotModeTriggers.disabled()
                 .and(driverController.a())
-                .onTrue(drivetrain.runOnce(() -> drivetrain.resetEmergencyStop()).ignoringDisable(true));
+                .onTrue(drivetrain
+                        .runOnce(() -> drivetrain.resetEmergencyStop())
+                        .ignoringDisable(true));
     }
 
     /**

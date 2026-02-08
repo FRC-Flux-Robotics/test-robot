@@ -101,11 +101,13 @@ class IntegrationTest {
             auto.end(false);
 
             // Second execution cycle should work
-            assertDoesNotThrow(() -> {
-                auto.initialize();
-                auto.execute();
-                auto.end(false);
-            }, "Command should be restartable");
+            assertDoesNotThrow(
+                    () -> {
+                        auto.initialize();
+                        auto.execute();
+                        auto.end(false);
+                    },
+                    "Command should be restartable");
         }
 
         @Test
@@ -173,9 +175,7 @@ class IntegrationTest {
         @Test
         @DisplayName("Auto mode speed is negative for backward movement")
         void autoModeSpeed_isNegativeForBackward() {
-            assertTrue(
-                    DriveConstants.AutoModeSpeed < 0,
-                    "Auto mode speed should be negative for backward movement");
+            assertTrue(DriveConstants.AutoModeSpeed < 0, "Auto mode speed should be negative for backward movement");
             assertEquals(-0.8, DriveConstants.AutoModeSpeed, 0.001, "Auto mode speed should be -0.8 m/s");
         }
 
@@ -202,8 +202,7 @@ class IntegrationTest {
         @DisplayName("DriveForwardAuto can be created with mock drivetrain")
         void driveForwardAuto_canBeCreatedWithMockDrivetrain() {
             assertDoesNotThrow(
-                    () -> new DriveForwardAuto(mockDrivetrain),
-                    "DriveForwardAuto should accept mock drivetrain");
+                    () -> new DriveForwardAuto(mockDrivetrain), "DriveForwardAuto should accept mock drivetrain");
         }
 
         @Test
@@ -227,11 +226,13 @@ class IntegrationTest {
             auto.initialize();
 
             // Execute multiple times like scheduler would
-            assertDoesNotThrow(() -> {
-                for (int i = 0; i < 10; i++) {
-                    auto.execute();
-                }
-            }, "Multiple execute cycles should not throw");
+            assertDoesNotThrow(
+                    () -> {
+                        for (int i = 0; i < 10; i++) {
+                            auto.execute();
+                        }
+                    },
+                    "Multiple execute cycles should not throw");
 
             auto.end(false);
 
