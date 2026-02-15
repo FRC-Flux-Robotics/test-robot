@@ -10,7 +10,8 @@ import frc.robot.util.DebugLogger;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+// TESTING: import disabled with WPILOGWriter
+// import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -32,26 +33,29 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
         Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
 
+        // TESTING: Disk logging disabled to diagnose RoboRIO bricking.
+        // Re-enable after confirming logging was the cause.
         if (isReal()) {
             // Real robot: log to USB stick and publish to NetworkTables
-            Logger.addDataReceiver(new WPILOGWriter());
+            // Logger.addDataReceiver(new WPILOGWriter());
             Logger.addDataReceiver(new NT4Publisher());
         } else {
             // Simulation: log to NetworkTables and local file
             Logger.addDataReceiver(new NT4Publisher());
-            Logger.addDataReceiver(new WPILOGWriter());
+            // Logger.addDataReceiver(new WPILOGWriter());
         }
 
         // Start logging - must be called before any other logging
         Logger.start();
 
+        // TESTING: File logging disabled to diagnose RoboRIO bricking.
         // Initialize debug file logging
-        if (Constants.LoggingConstants.ENABLE_FILE_LOGGING) {
-            String logDir = isReal()
-                    ? Constants.LoggingConstants.FILE_LOG_DIRECTORY_REAL
-                    : Constants.LoggingConstants.FILE_LOG_DIRECTORY_SIM;
-            DebugLogger.enableFileLogging(logDir);
-        }
+        // if (Constants.LoggingConstants.ENABLE_FILE_LOGGING) {
+        //     String logDir = isReal()
+        //             ? Constants.LoggingConstants.FILE_LOG_DIRECTORY_REAL
+        //             : Constants.LoggingConstants.FILE_LOG_DIRECTORY_SIM;
+        //     DebugLogger.enableFileLogging(logDir);
+        // }
 
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.

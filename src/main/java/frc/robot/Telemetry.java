@@ -1,6 +1,7 @@
 package frc.robot;
 
-import com.ctre.phoenix6.SignalLogger;
+// TESTING: import disabled with SignalLogger
+// import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -29,7 +30,8 @@ public class Telemetry {
      */
     public Telemetry(double maxSpeed) {
         MaxSpeed = maxSpeed;
-        SignalLogger.start();
+        // TESTING: SignalLogger disabled to diagnose RoboRIO bricking.
+        // SignalLogger.start();
 
         /* Set up the module state Mechanism2d telemetry */
         for (int i = 0; i < 4; ++i) {
@@ -119,10 +121,11 @@ public class Telemetry {
             m_moduleTargetsArray[i * 2 + 1] = state.ModuleTargets[i].speedMetersPerSecond;
         }
 
-        SignalLogger.writeDoubleArray("DriveState/Pose", m_poseArray);
-        SignalLogger.writeDoubleArray("DriveState/ModuleStates", m_moduleStatesArray);
-        SignalLogger.writeDoubleArray("DriveState/ModuleTargets", m_moduleTargetsArray);
-        SignalLogger.writeDouble("DriveState/OdometryPeriod", state.OdometryPeriod, "seconds");
+        // TESTING: SignalLogger writes disabled to diagnose RoboRIO bricking.
+        // SignalLogger.writeDoubleArray("DriveState/Pose", m_poseArray);
+        // SignalLogger.writeDoubleArray("DriveState/ModuleStates", m_moduleStatesArray);
+        // SignalLogger.writeDoubleArray("DriveState/ModuleTargets", m_moduleTargetsArray);
+        // SignalLogger.writeDouble("DriveState/OdometryPeriod", state.OdometryPeriod, "seconds");
 
         /* Telemeterize the pose to a Field2d */
         fieldTypePub.set("Field2d");
