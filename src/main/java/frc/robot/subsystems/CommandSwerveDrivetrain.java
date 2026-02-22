@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -148,7 +147,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, modules);
 
-        gyro = new Pigeon2(config.pigeonId, new CANBus(config.driveCANBus));
+        gyro = getPigeon2();
         initOdometry(
                 new Translation2d(config.frontLeft.xPos, config.frontLeft.yPos),
                 new Translation2d(config.frontRight.xPos, config.frontRight.yPos),
@@ -185,7 +184,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, odometryUpdateFrequency, modules);
 
-        gyro = new Pigeon2(config.pigeonId, new CANBus(config.driveCANBus));
+        gyro = getPigeon2();
         initOdometry(
                 new Translation2d(config.frontLeft.xPos, config.frontLeft.yPos),
                 new Translation2d(config.frontRight.xPos, config.frontRight.yPos),
@@ -235,7 +234,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 visionStandardDeviation,
                 modules);
 
-        gyro = new Pigeon2(config.pigeonId, new CANBus(config.driveCANBus));
+        gyro = getPigeon2();
         initOdometry(
                 new Translation2d(config.frontLeft.xPos, config.frontLeft.yPos),
                 new Translation2d(config.frontRight.xPos, config.frontRight.yPos),
@@ -320,14 +319,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         io.updateInputs(inputs);
         Logger.processInputs("Drive", inputs);
 
-        // Get the rotation of the robot from the gyro.
-        Rotation2d rotation = gyro.getRotation2d();
-        // Update the pose
-        currentPose = odometry.update(rotation, getState().ModulePositions);
+        // // Get the rotation of the robot from the gyro.
+        // Rotation2d rotation = gyro.getRotation2d();
+        // // Update the pose
+        // currentPose = odometry.update(rotation, getState().ModulePositions);
 
-        SmartDashboard.putNumber("Position_X", currentPose.getX());
-        SmartDashboard.putNumber("Position_Y", currentPose.getY());
-        SmartDashboard.putNumber("Rotation_Grad", currentPose.getRotation().getDegrees());
+        // SmartDashboard.putNumber("Position_X", currentPose.getX());
+        // SmartDashboard.putNumber("Position_Y", currentPose.getY());
+        // SmartDashboard.putNumber("Rotation_Grad", currentPose.getRotation().getDegrees());
     }
 
     private void startSimThread() {
