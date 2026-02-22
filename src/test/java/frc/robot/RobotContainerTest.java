@@ -28,19 +28,9 @@ class RobotContainerTest {
         RobotConfig config = RobotConfig.CoralRobot;
 
         assertNotNull(config, "CoralRobot config should exist");
-        assertEquals("Drivetrain", config.driveCANBus, "CoralRobot should use Drivetrain CAN bus");
+        assertEquals("CANdace", config.driveCANBus, "CoralRobot should use CANdace CAN bus");
         assertEquals("rio", config.systemCANBus, "CoralRobot should use rio system CAN bus");
-        assertEquals(20, config.pigeonId, "CoralRobot Pigeon ID should be 20");
-    }
-
-    @Test
-    void practiceRobotConfig_isValid() {
-        RobotConfig config = RobotConfig.PracticeRobot;
-
-        assertNotNull(config, "PracticeRobot config should exist");
-        assertEquals("CANdace", config.driveCANBus, "PracticeRobot should use CANdace CAN bus");
-        assertEquals("rio", config.systemCANBus, "PracticeRobot should use rio system CAN bus");
-        assertEquals(24, config.pigeonId, "PracticeRobot Pigeon ID should be 24");
+        assertEquals(24, config.pigeonId, "CoralRobot Pigeon ID should be 24");
     }
 
     @Test
@@ -51,16 +41,6 @@ class RobotContainerTest {
         assertNotNull(config.frontRight, "CoralRobot should have front right module");
         assertNotNull(config.backLeft, "CoralRobot should have back left module");
         assertNotNull(config.backRight, "CoralRobot should have back right module");
-    }
-
-    @Test
-    void practiceRobotConfig_hasFourModules() {
-        RobotConfig config = RobotConfig.PracticeRobot;
-
-        assertNotNull(config.frontLeft, "PracticeRobot should have front left module");
-        assertNotNull(config.frontRight, "PracticeRobot should have front right module");
-        assertNotNull(config.backLeft, "PracticeRobot should have back left module");
-        assertNotNull(config.backRight, "PracticeRobot should have back right module");
     }
 
     @Test
@@ -89,19 +69,6 @@ class RobotContainerTest {
     @Test
     void drivetrainConstants_canBeBuiltFromCoralConfig() {
         RobotConfig config = RobotConfig.CoralRobot;
-
-        SwerveDrivetrainConstants constants = new SwerveDrivetrainConstants()
-                .withCANBusName(config.driveCANBus)
-                .withPigeon2Id(config.pigeonId);
-
-        assertNotNull(constants, "SwerveDrivetrainConstants should be created");
-        assertEquals("Drivetrain", constants.CANBusName, "CAN bus name should match config");
-        assertEquals(20, constants.Pigeon2Id, "Pigeon ID should match config");
-    }
-
-    @Test
-    void drivetrainConstants_canBeBuiltFromPracticeConfig() {
-        RobotConfig config = RobotConfig.PracticeRobot;
 
         SwerveDrivetrainConstants constants = new SwerveDrivetrainConstants()
                 .withCANBusName(config.driveCANBus)

@@ -16,7 +16,6 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
  * <p>Pre-configured instances are provided for team robots:
  * <ul>
  *   <li>{@link #CoralRobot} - Competition robot with elevator</li>
- *   <li>{@link #PracticeRobot} - Practice robot configuration</li>
  * </ul>
  *
  * <p>Each robot configuration specifies CAN IDs, encoder offsets, and physical
@@ -58,22 +57,9 @@ public final class RobotConfig {
 
     /**
      * Coral robot configuration (competition robot with elevator).
-     * Uses "Drivetrain" CANivore bus with Pigeon ID 20.
-     */
-    public static final RobotConfig CoralRobot = new RobotConfig(
-            "Drivetrain",
-            "rio",
-            20,
-            new SwerveModuleConfig(1, 2, 24, -0.03173828125, 11.5, 11.5, InvertLeftSide, false, false),
-            new SwerveModuleConfig(19, 18, 23, -0.455322265625, 11.5, -11.5, InvertRightSide, false, false),
-            new SwerveModuleConfig(4, 3, 25, -0.12744140625, -11.5, 11.5, InvertLeftSide, false, false),
-            new SwerveModuleConfig(16, 17, 26, 0.115478515625, -11.5, -11.5, InvertRightSide, false, false));
-
-    /**
-     * Practice robot configuration.
      * Uses "CANdace" CANivore bus with Pigeon ID 24.
      */
-    public static final RobotConfig PracticeRobot = new RobotConfig(
+    public static final RobotConfig CoralRobot = new RobotConfig(
             "CANdace",
             "rio",
             24,

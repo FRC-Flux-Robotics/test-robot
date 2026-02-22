@@ -33,8 +33,8 @@ class RobotConfigTest {
         RobotConfig test = RobotConfig.CoralRobot;
 
         assertNotNull(test);
-        assertEquals("Drivetrain", test.driveCANBus);
-        assertEquals(20, test.pigeonId);
+        assertEquals("CANdace", test.driveCANBus);
+        assertEquals(24, test.pigeonId);
 
         // Verify all four modules are present
         assertNotNull(test.frontLeft);
@@ -47,30 +47,6 @@ class RobotConfigTest {
             test.frontLeft.encoderId, test.frontRight.encoderId, test.backLeft.encoderId, test.backRight.encoderId
         };
         assertEquals(4, java.util.Arrays.stream(encoderIds).distinct().count(), "Encoder IDs should be unique");
-    }
-
-    @Test
-    void practiceRobot_hasValidConfiguration() {
-        RobotConfig practice = RobotConfig.PracticeRobot;
-
-        assertNotNull(practice);
-        assertEquals("CANdace", practice.driveCANBus);
-        assertEquals(24, practice.pigeonId);
-
-        // Verify all four modules are present
-        assertNotNull(practice.frontLeft);
-        assertNotNull(practice.frontRight);
-        assertNotNull(practice.backLeft);
-        assertNotNull(practice.backRight);
-
-        // Verify CAN IDs are unique across modules
-        int[] driveIds = {
-            practice.frontLeft.driveMotorId,
-            practice.frontRight.driveMotorId,
-            practice.backLeft.driveMotorId,
-            practice.backRight.driveMotorId
-        };
-        assertEquals(4, java.util.Arrays.stream(driveIds).distinct().count(), "Drive motor IDs should be unique");
     }
 
     @Test
