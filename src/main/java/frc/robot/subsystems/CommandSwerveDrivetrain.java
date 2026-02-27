@@ -319,14 +319,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         io.updateInputs(inputs);
         Logger.processInputs("Drive", inputs);
 
-        // // Get the rotation of the robot from the gyro.
-        // Rotation2d rotation = gyro.getRotation2d();
-        // // Update the pose
-        // currentPose = odometry.update(rotation, getState().ModulePositions);
+        // Update pose from Phoenix 6 built-in 250Hz odometry
+        currentPose = getState().Pose;
 
-        // SmartDashboard.putNumber("Position_X", currentPose.getX());
-        // SmartDashboard.putNumber("Position_Y", currentPose.getY());
-        // SmartDashboard.putNumber("Rotation_Grad", currentPose.getRotation().getDegrees());
+        SmartDashboard.putNumber("Position_X", currentPose.getX());
+        SmartDashboard.putNumber("Position_Y", currentPose.getY());
+        SmartDashboard.putNumber("Rotation_Deg", currentPose.getRotation().getDegrees());
     }
 
     private void startSimThread() {
